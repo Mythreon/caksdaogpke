@@ -204,9 +204,20 @@
           if (!div.classList.contains("revealed")) {
             let isJoker = false;
 
+            // Jokeri-ehdot
+
             if (score < -5 || score > 45) {
               if (Math.random() < 0.01) isJoker = true;
             }
+
+              if (score < -50 || score > 100) {
+                if (Math.random() < 0.05) isJoker = true;
+            }
+                if (score < -100 || score > 250) {
+                  if (Math.random() < 0.1) isJoker = true;
+            }
+
+            // Mitä enemmän/vähemmän pisteitä, sitä todennäköisemmin Jokeri ilmestyy
 
             div.classList.add("revealed");
 
