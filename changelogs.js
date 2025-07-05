@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   changelogBox.innerHTML = `
     <h3 style="margin-top: 0;">Muutokset</h3>
     <ul>
-    <li><strong>v1.0.12</strong> - Poistettu Klassisen ja Kompleksin pelimuotojen ero.</li>
+    <li><strong>v1.0.12</strong> - Poistettu Klassisen ja Kompleksin pelimuotojen ero. <br> Vaihdettu värimaailmaa. </li>
     <li><strong>v1.0.11</strong> - Korjattu hutien lasku</li>
     <li><strong>v1.0.1</strong> - Lisätty Changelog-painike ja korjattu tiettyjä ongelmia</li>
     <li><strong>v1.0</strong> - Ensijulkaisu.</li>
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   changelogBox.style.position = "fixed";
   changelogBox.style.top = "50px";
   changelogBox.style.left = "10px";
-  changelogBox.style.background = "rgba(63, 162, 10, 0.86)";
+  changelogBox.style.background = "rgba(63, 162, 10, 0.46)";
   changelogBox.style.color = "#222";
   changelogBox.style.padding = "12px 16px";
   changelogBox.style.borderRadius = "8px";
@@ -41,4 +41,4 @@ document.addEventListener("DOMContentLoaded", () => {
     changelogBox.style.display = visible ? "block" : "none";
   });
 });
-
+", () => {
