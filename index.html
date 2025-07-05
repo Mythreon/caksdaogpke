@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Korttipeli 3x3</title>
+  <style>
+      header {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10000;
+  }
+
+  header a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  header a:hover {
+    color: #007bff;
+  }
+
+
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #2e7d32;
+      color: white;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: navy;
+      color: transparent;
+      font-size: 24px;
+      font-weight: bold;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .card.revealed {
+      background: white;
+      color: black;
+    }
+    .card.revealed.red {
+      color: red;
+    }
+    #messageBox {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(4, 108, 28, 0.882);
+      color: #222;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      transition: opacity 0.5s ease;
+    }
+
+    #messageBox.show {
+  display: block;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+    #scoreBox {
+      margin-bottom: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff176;
+      text-shadow: 1px 1px 2px #000;
+
+    }
+    #highScores {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      margin-top: 25px;
+      text-align: left;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(0, 92, 11, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    #highScores h3 {
+      margin-top: 0;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background-color: #388e3c;
+      color: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="adger.html">Klassinen</a>
+  <a href="adgerComplex.html">Kompleksi</a>
+</header>
+
+<h1>Anna, kun selitän pelin.</h1>
+<div class="grid" id="cardGrid"></div>
+<div id="scoreBox">Pisteet: 0</div>
+<button id="resetBtn">Resetoi peli</button>
+
+<div id="messageBox"></div>
+
+<div id="highScores">
+  <h3>Parhaat pisteet</h3>
+  <ul id="scoreboardClassic"></ul>
+</div>
+
+<script>
+  const suits = ["♠", "♥", "♦", "♣"];
+  const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  let deck = [];
+  let gridCards = Array(3).fill(null).map(() => Array(3).fill(null));
+  let score = 0;
+  let misses = 0;
+  let comboCount = 0;
+  let evaluatedTriplets = [];
+
+  const grid = document.getElementById("cardGrid");
+  const scoreBox = document.getElementById("scoreBox");
+  const messageBox = document.getElementById("messageBox");
+  const resetBtn = document.getElementById("resetBtn");
+  const scoreList = document.getElementById("scoreboardClassic");
+
+  function createDeck() {
+    deck = [];
+    for (let suit of suits) {
+      for (let value of values) {
+        deck.push({ suit, value });
+      }
+    }
+  }
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function initGame() {
+    score = 0;
+    misses = 0;
+    comboCount = 0;
+    evaluatedTriplets = [];
+    updateScoreDisplay();
+    gridCards = Array(3).fill(null).map(() => Array(3).fill(null));
+    grid.innerHTML = "";
+    createDeck();
+    const shuffledDeck = shuffle(deck).slice(0, 9);
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const card = shuffledDeck[i * 3 + j];
+        const div = document.createElement("div");
+        div.classList.add("card");
+        div.textContent = "";
+
+        div.addEventListener("click", () => {
+          if (!div.classList.contains("revealed")) {
+            let isJoker = false;
+
+            if (score < -5 || score > 45) {
+              if (Math.random() < 0.01) isJoker = true;
+            }
+
+            div.classList.add("revealed");
+
+            if (isJoker) {
+              div.textContent = "🃏Jokeri🃏";
+              div.style.color = "purple";
+              score = 0;
+              misses = 0;
+              comboCount = 0;
+              gridCards[i][j] = "Jokeri";
+              showMessage("Jokeri ilmestyi! Pisteet nollattu!");
+              updateScoreDisplay();
+            } else {
+              const cardText = card.suit + card.value;
+              div.textContent = cardText;
+              if (card.suit === "♥" || card.suit === "♦") div.classList.add("red");
+              gridCards[i][j] = cardText;
+              evaluateAllVisibleTriplets();
+            }
+
+            checkGameOver();
+          }
+        });
+
+        grid.appendChild(div);
+      }
+    }
+  }
+
+  function updateScoreDisplay() {
+    scoreBox.textContent = `Pisteet: ${score}`;
+  }
+
+  function showMessage(text) {
+    messageBox.textContent = text;
+    messageBox.style.display = "block";
+    messageBox.style.opacity = "1";
+    setTimeout(() => {
+      messageBox.style.opacity = "0";
+      setTimeout(() => {
+        messageBox.style.display = "none";
+      }, 500);
+    }, 3000);
+  }
+
+  function parseCard(cardText) {
+    const suit = cardText[0];
+    const value = cardText.slice(1);
+    const orderMap = {
+      "A": 1, "2": 2, "3": 3, "4": 4,
+      "5": 5, "6": 6, "7": 7, "8": 8,
+      "9": 9, "10": 10, "J": 11, "Q": 12, "K": 13
+    };
+    return { suit, value, order: orderMap[value] };
+  }
+
+  function evaluate(triplet) {
+    const cards = triplet.map(parseCard);
+    const suitsSet = new Set(cards.map(c => c.suit));
+    const valuesSet = new Set(cards.map(c => c.value));
+    const orders = cards.map(c => c.order).sort((a, b) => a - b);
+
+    if (suitsSet.size === 1 && orders[1] - orders[0] === 1 && orders[2] - orders[1] === 1)
+      return 20;
+    if (orders[1] - orders[0] === 1 && orders[2] - orders[1] === 1)
+      return 7;
+    if (valuesSet.size === 1 && suitsSet.size > 1)
+      return 5;
+    if (valuesSet.size === 1)
+      return 2;
+    if (suitsSet.size === 1)
+      return 1;
+    return 0;
+  }
+
+  function getAllTripletsFromGrid(grid) {
+    const triplets = [];
+
+    for (let r = 0; r < 3; r++) {
+      const row = grid[r];
+      if (row.every(cell => cell)) triplets.push([...row]);
+    }
+
+    for (let c = 0; c < 3; c++) {
+      const col = [grid[0][c], grid[1][c], grid[2][c]];
+      if (col.every(cell => cell)) triplets.push(col);
+    }
+
+    const diag1 = [grid[0][0], grid[1][1], grid[2][2]];
+    if (diag1.every(cell => cell)) triplets.push(diag1);
+
+    const diag2 = [grid[0][2], grid[1][1], grid[2][0]];
+    if (diag2.every(cell => cell)) triplets.push(diag2);
+
+    return triplets;
+  }
+
+function evaluateAllVisibleTriplets() {
+  const triplets = getAllTripletsFromGrid(gridCards);
+  let gotPoints = false;
+  let pointsGainedThisRound = 0;
+  let newTripletEvaluated = false;
+
+  for (let triplet of triplets) {
+    const key = triplet.join(",");
+    if (!evaluatedTriplets.includes(key)) {
+      evaluatedTriplets.push(key);
+      newTripletEvaluated = true;
+
+      const pts = evaluate(triplet);
+      if (pts > 0) {
+        gotPoints = true;
+        pointsGainedThisRound += pts;
+      }
+    }
+  }
+
+  if (gotPoints) {
+    comboCount++;
+    const comboMultiplier = 1 + 0.5 * (comboCount - 1);
+    const comboPoints = Math.floor(pointsGainedThisRound * comboMultiplier);
+    score += comboPoints;
+    showMessage(`Combo x${comboCount}! +${comboPoints}p`);
+    misses = 0;
+  } else if (newTripletEvaluated) {
+    comboCount = 0;
+    misses++;
+    const penalties = [0, -1, -2, -3, -4, -5, -6, -7, -8];
+    const penalty = penalties[misses] ?? -36;
+    score += penalty;
+    showMessage(`Huti! ${misses} hutia: ${penalty}p`);
+  }
+
+  updateScoreDisplay();
+}
+
+
+
+  function saveScore(score) {
+    const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
+    scores.push(score);
+    scores.sort((a, b) => b - a);
+    if (scores.length > 5) scores.length = 5;
+    localStorage.setItem("highScores", JSON.stringify(scores));
+    renderHighScores();
+  }
+
+  function renderHighScores() {
+    const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
+    scoreList.innerHTML = "";
+    if (scores.length === 0) {
+      scoreList.innerHTML = "<li>Ei tuloksia vielä</li>";
+    } else {
+      for (let s of scores) {
+        const li = document.createElement("li");
+        li.textContent = s + " pistettä";
+        scoreList.appendChild(li);
+      }
+    }
+  }
+
+  function checkGameOver() {
+    const allRevealed = gridCards.flat().every(card => card !== null);
+    if (allRevealed) {
+      showMessage("Peli päättyi! Pisteesi: " + score);
+      if (score > 0) saveScore(score);
+    }
+  }
+
+  resetBtn.addEventListener("click", () => {
+    if (score !== 0) saveScore(score);
+    initGame();
+  });
+
+  initGame();
+  renderHighScores();
+</script>
+
+
+
+</body>
+</html>
