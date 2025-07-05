@@ -383,9 +383,9 @@ function getAllTripletsFromGrid(grid) {
 
 function evaluateAllVisibleTriplets() {
   const triplets = getAllTripletsFromGrid(gridCards);
-  let totalPointsThisClick = 0;
+  let positivePoints = 0;
+  let negativePoints = 0;
   let newTripletsFound = false;
-  let hutiCountThisClick = 0;
 
   for (let { cards, coords } of triplets) {
     const key = coords.map(([r, c]) => `${r}-${c}`).join("|");
@@ -411,25 +411,32 @@ function evaluateAllVisibleTriplets() {
       console.log(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
 
       if (pts > 0) {
-        totalPointsThisClick += pts;
+        positivePoints += pts;
       } else if (pts < 0) {
-        hutiCountThisClick++;
+        negativePoints += pts;
       }
     } else {
       console.log(`TRIPLETTI ${key} on jo arvioitu, ohitetaan.`);
     }
   }
 
-  if (totalPointsThisClick > 0) {
+  if (positivePoints > 0) {
     comboCount++;
     const comboMultiplier = 1 + 0.5 * (comboCount - 1);
-    const comboPoints = Math.floor(totalPointsThisClick * comboMultiplier);
-    score += comboPoints;
-    showMessage(`Combo x${comboCount}! +${comboPoints}p`);
-    console.log(`Combo x${comboCount}! +${comboPoints}p (raw: ${totalPointsThisClick})`);
+    const comboPoints = Math.floor(positivePoints * comboMultiplier);
+    const total = comboPoints + negativePoints;
+    score += total;
+
+    let msg = `Combo x${comboCount}! +${comboPoints}p`;
+    if (negativePoints < 0) {
+      msg += `, mutta ${negativePoints}p hutia`;
+    }
+
+    showMessage(msg);
+    console.log(`Combo x${comboCount}! ${comboPoints}p (raw: ${positivePoints}) + huti ${negativePoints}p → yhteensä ${total}`);
     misses = 0;
-  } else if (newTripletsFound && hutiCountThisClick > 0) {
-    misses += hutiCountThisClick;
+  } else if (newTripletsFound && negativePoints < 0) {
+    misses += 1;
     const penalties = [0, -1, -2, -3, -4, -5, -6, -7, -8];
     const penalty = penalties[misses] ?? (-8 * misses);
     score += penalty;
@@ -439,9 +446,6 @@ function evaluateAllVisibleTriplets() {
 
   updateScoreDisplay();
 }
-
-
-
 
 
 
