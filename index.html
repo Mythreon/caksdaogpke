@@ -187,6 +187,7 @@
     score = 0;
     misses = 0;
     comboCount = 0;
+    aceCount = 0;
     evaluatedTriplets = [];
     updateScoreDisplay();
     gridCards = Array(3).fill(null).map(() => Array(3).fill(null));
@@ -238,6 +239,16 @@ div.addEventListener("click", () => {
       console.log(`Paljastettiin kortti: ${cardText} sijainnissa [${i}, ${j}]`);
       evaluateAllVisibleTriplets();
     }
+
+          if (card.value === "A") {
+        aceCount++;
+        const acePoints = aceCount + 1;
+        score += acePoints;
+        showMessage(`Paljastit ässän! +${acePoints} pistettä`);
+        console.log(` Ässä +${acePoints} pistettä`);
+        updateScoreDisplay();
+      }
+
 
     checkGameOver();
   }
