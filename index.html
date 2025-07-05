@@ -151,12 +151,14 @@
 </div>
 
 <script>
+
   const suits = ["♠", "♥", "♦", "♣"];
   const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   let deck = [];
   let gridCards = Array(3).fill(null).map(() => Array(3).fill(null));
   let score = 0;
   let misses = 0;
+  let onlyJokers = false;
   let comboCount = 0;
   let evaluatedTriplets = [];
 
@@ -208,16 +210,22 @@ div.addEventListener("click", () => {
 
     console.log(`Korttia klikattu: sijainti [${i}, ${j}]`);
 
-    // Jokeri-ehdot
-    if (score < -5 || score > 45) {
-      if (Math.random() < 0.01) isJoker = true;
-    }
-    if (score < -50 || score > 100) {
-      if (Math.random() < 0.05) isJoker = true;
-    }
-    if (score < -100 || score > 250) {
-      if (Math.random() < 0.1) isJoker = true;
-    }
+
+if (onlyJokers) {
+  isJoker = true;
+} else {
+
+  if (score < -5 || score > 45) {
+    if (Math.random() < 0.01) isJoker = true;
+  }
+  if (score < -50 || score > 100) {
+    if (Math.random() < 0.05) isJoker = true;
+  }
+  if (score < -100 || score > 250) {
+    if (Math.random() < 0.1) isJoker = true;
+  }
+}
+
 
     div.classList.add("revealed");
 
@@ -446,18 +454,28 @@ function evaluateAllVisibleTriplets() {
     renderHighScores();
   }
 
-  function renderHighScores() {
-    const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
-    scoreList.innerHTML = "";
-    if (scores.length === 0) {
-      scoreList.innerHTML = "<li>Ei tuloksia vielä</li>";
-    } else {
-      for (let s of scores) {
-        const li = document.createElement("li");
-        li.textContent = s + " pistettä";
-        scoreList.appendChild(li);
-      }
+function renderHighScores() {
+  const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
+  scoreList.innerHTML = "";
+
+  onlyJokers = scores.some(s => s > 500); 
+
+  if (scores.length === 0) {
+    scoreList.innerHTML = "<li>Ei tuloksia vielä</li>";
+  } else {
+    for (let s of scores) {
+      const li = document.createElement("li");
+      li.textContent = s + " pistettä";
+      scoreList.appendChild(li);
     }
+  }
+}
+
+if (onlyJokers) {
+  console.log("🔥 Jokerimoodi aktivoitu! 🔥");
+}
+  if (onlyJokers) {
+    showMessage("🔥 Huijarimoodi aktivoitu! 🔥");
   }
 
   function checkGameOver() {
