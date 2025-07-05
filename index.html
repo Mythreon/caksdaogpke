@@ -1,3 +1,4 @@
+<!-- Spagettikoodi brought to you by me -->
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -200,47 +201,48 @@
         div.classList.add("card");
         div.textContent = "";
 
-        div.addEventListener("click", () => {
-          if (!div.classList.contains("revealed")) {
-            let isJoker = false;
+div.addEventListener("click", () => {
+  if (!div.classList.contains("revealed")) {
+    let isJoker = false;
 
-            // Jokeri-ehdot
+    console.log(`Korttia klikattu: sijainti [${i}, ${j}]`);
 
-            if (score < -5 || score > 45) {
-              if (Math.random() < 0.01) isJoker = true;
-            }
+    // Jokeri-ehdot
+    if (score < -5 || score > 45) {
+      if (Math.random() < 0.01) isJoker = true;
+    }
+    if (score < -50 || score > 100) {
+      if (Math.random() < 0.05) isJoker = true;
+    }
+    if (score < -100 || score > 250) {
+      if (Math.random() < 0.1) isJoker = true;
+    }
 
-              if (score < -50 || score > 100) {
-                if (Math.random() < 0.05) isJoker = true;
-            }
-                if (score < -100 || score > 250) {
-                  if (Math.random() < 0.1) isJoker = true;
-            }
+    div.classList.add("revealed");
 
-            // Mitä enemmän/vähemmän pisteitä, sitä todennäköisemmin Jokeri ilmestyy
+    if (isJoker) {
+      div.textContent = "🃏Jokeri🃏";
+      div.style.color = "purple";
+      score = 0;
+      misses = 0;
+      comboCount = 0;
+      gridCards[i][j] = "Jokeri";
+      console.log("🃏 Jokeri ilmestyi! Pisteet nollattu.");
+      showMessage("Jokeri ilmestyi! Pisteet nollattu!");
+      updateScoreDisplay();
+    } else {
+      const cardText = card.suit + card.value;
+      div.textContent = cardText;
+      if (card.suit === "♥" || card.suit === "♦") div.classList.add("red");
+      gridCards[i][j] = cardText;
+      console.log(`Paljastettiin kortti: ${cardText} sijainnissa [${i}, ${j}]`);
+      evaluateAllVisibleTriplets();
+    }
 
-            div.classList.add("revealed");
+    checkGameOver();
+  }
+});
 
-            if (isJoker) {
-              div.textContent = "🃏Jokeri🃏";
-              div.style.color = "purple";
-              score = 0;
-              misses = 0;
-              comboCount = 0;
-              gridCards[i][j] = "Jokeri";
-              showMessage("Jokeri ilmestyi! Pisteet nollattu!");
-              updateScoreDisplay();
-            } else {
-              const cardText = card.suit + card.value;
-              div.textContent = cardText;
-              if (card.suit === "♥" || card.suit === "♦") div.classList.add("red");
-              gridCards[i][j] = cardText;
-              evaluateAllVisibleTriplets();
-            }
-
-            checkGameOver();
-          }
-        });
 
         grid.appendChild(div);
       }
@@ -291,72 +293,117 @@ function evaluate(triplet) {
     return 5;
   if (valuesSet.size === 1)
     return 2;
-  if (colorsSet.size === 1)  // kaikki samanvärisiä (esim. 3 punaista tai 3 mustaa)
+  if (colorsSet.size === 1)
     return 1;
+
+  // Jos tässä asti päädyttiin, tarkistetaan kahden värin huti
+  if (colorsSet.size > 1)
+    return -1;  // Huti -1p kahdesta eri väristä
+
   return 0;
 }
 
 
-  function getAllTripletsFromGrid(grid) {
-    const triplets = [];
 
-    for (let r = 0; r < 3; r++) {
-      const row = grid[r];
-      if (row.every(cell => cell)) triplets.push([...row]);
+function getAllTripletsFromGrid(grid) {
+  const triplets = [];
+
+  for (let r = 0; r < 3; r++) {
+    const row = grid[r];
+    if (row.every(cell => cell)) {
+      const coords = [[r, 0], [r, 1], [r, 2]];
+      triplets.push({ cards: [row[0], row[1], row[2]], coords });
     }
-
-    for (let c = 0; c < 3; c++) {
-      const col = [grid[0][c], grid[1][c], grid[2][c]];
-      if (col.every(cell => cell)) triplets.push(col);
-    }
-
-    const diag1 = [grid[0][0], grid[1][1], grid[2][2]];
-    if (diag1.every(cell => cell)) triplets.push(diag1);
-
-    const diag2 = [grid[0][2], grid[1][1], grid[2][0]];
-    if (diag2.every(cell => cell)) triplets.push(diag2);
-
-    return triplets;
   }
+
+  for (let c = 0; c < 3; c++) {
+    const col = [grid[0][c], grid[1][c], grid[2][c]];
+    if (col.every(cell => cell)) {
+      const coords = [[0, c], [1, c], [2, c]];
+      triplets.push({ cards: col, coords });
+    }
+  }
+
+  const diag1 = [grid[0][0], grid[1][1], grid[2][2]];
+  if (diag1.every(cell => cell)) {
+    triplets.push({
+      cards: diag1,
+      coords: [[0, 0], [1, 1], [2, 2]]
+    });
+  }
+
+  const diag2 = [grid[0][2], grid[1][1], grid[2][0]];
+  if (diag2.every(cell => cell)) {
+    triplets.push({
+      cards: diag2,
+      coords: [[0, 2], [1, 1], [2, 0]]
+    });
+  }
+
+  return triplets;
+}
 
 function evaluateAllVisibleTriplets() {
   const triplets = getAllTripletsFromGrid(gridCards);
-  let gotPoints = false;
-  let pointsGainedThisRound = 0;
-  let newTripletEvaluated = false;
+  let totalPointsThisClick = 0;
+  let newTripletsFound = false;
+  let hutiCountThisClick = 0;
 
-  for (let triplet of triplets) {
-    const key = triplet.join(",");
+  for (let { cards, coords } of triplets) {
+    const key = coords.map(([r, c]) => `${r}-${c}`).join("|");
+
     if (!evaluatedTriplets.includes(key)) {
-      evaluatedTriplets.push(key);
-      newTripletEvaluated = true;
+      const allRevealed = coords.every(([r, c]) => {
+        const cellIndex = r * 3 + c;
+        const cell = grid.children[cellIndex];
+        return cell && cell.classList.contains("revealed");
+      });
 
-      const pts = evaluate(triplet);
-      if (pts > 0) {
-        gotPoints = true;
-        pointsGainedThisRound += pts;
+      if (!allRevealed) {
+        console.log(`⏳ Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
+        continue;
       }
+
+      evaluatedTriplets.push(key);
+      newTripletsFound = true;
+
+      const pts = evaluate(cards);
+
+      console.log(`✅ Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
+      console.log(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
+
+      if (pts > 0) {
+        totalPointsThisClick += pts;
+      } else if (pts < 0) {
+        hutiCountThisClick++;
+      }
+    } else {
+      console.log(`⛔ Triplet ${key} on jo arvioitu, ohitetaan.`);
     }
   }
 
-  if (gotPoints) {
+  if (totalPointsThisClick > 0) {
     comboCount++;
     const comboMultiplier = 1 + 0.5 * (comboCount - 1);
-    const comboPoints = Math.floor(pointsGainedThisRound * comboMultiplier);
+    const comboPoints = Math.floor(totalPointsThisClick * comboMultiplier);
     score += comboPoints;
     showMessage(`Combo x${comboCount}! +${comboPoints}p`);
+    console.log(`🔥 Combo x${comboCount}! +${comboPoints}p (raw: ${totalPointsThisClick})`);
     misses = 0;
-  } else if (newTripletEvaluated) {
-    comboCount = 0;
-    misses++;
+  } else if (newTripletsFound && hutiCountThisClick > 0) {
+    misses += hutiCountThisClick;
     const penalties = [0, -1, -2, -3, -4, -5, -6, -7, -8];
-    const penalty = penalties[misses] ?? -36;
+    const penalty = penalties[misses] ?? (-8 * misses);
     score += penalty;
     showMessage(`Huti! ${misses} hutia: ${penalty}p`);
+    console.log(`❌ Huti! ${misses} hutia → ${penalty} pistettä`);
   }
 
   updateScoreDisplay();
 }
+
+
+
 
 
 
