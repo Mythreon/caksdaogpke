@@ -149,6 +149,7 @@
   <h3>Parhaat pisteet</h3>
   <ul id="scoreboardClassic"></ul>
 </div>
+<script src="changelogs.js"></script>
 
 <script>
 
@@ -435,17 +436,16 @@ function evaluateAllVisibleTriplets() {
     showMessage(msg);
     console.log(`Combo x${comboCount}! ${comboPoints}p (raw: ${positivePoints}) + huti ${negativePoints}p → yhteensä ${total}`);
     misses = 0;
-  } else if (newTripletsFound && negativePoints < 0) {
-    misses += 1;
-    const penalties = [0, -1, -2, -3, -4, -5, -6, -7, -8];
-    const penalty = penalties[misses] ?? (-8 * misses);
-    score += penalty;
-    showMessage(`Huti! ${misses} hutia: ${penalty}p`);
-    console.log(`Huti ${misses} hutia → ${penalty} pistettä`);
-  }
+} else if (newTripletsFound && negativePoints < 0) {
+  score += negativePoints;
+  showMessage(`Huti! ${negativePoints}p`);
+  console.log(`Huti → ${negativePoints} pistettä`);
+  misses += Math.abs(negativePoints); 
+}
 
   updateScoreDisplay();
 }
+
 
 
 
