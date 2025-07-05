@@ -64,27 +64,27 @@
     .card.revealed.red {
       color: red;
     }
-    #messageBox {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(4, 108, 28, 0.882);
-      color: #222;
-      padding: 15px 25px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      display: none;
-      z-index: 1000;
-      transition: opacity 0.5s ease;
-    }
-
-    #messageBox.show {
-  display: block;
-  animation: fadeIn 0.5s forwards;
+#messageBox {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(4, 108, 28, 0.9);
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  opacity: 0;
+  z-index: 1000;
+  transition: opacity 0.5s ease;
 }
+
+#messageBox.show {
+  opacity: 1;
+}
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateX(-50%) translateY(10px); }
@@ -229,7 +229,7 @@ div.addEventListener("click", () => {
       comboCount = 0;
       gridCards[i][j] = "Jokeri";
       console.log("🃏 Jokeri ilmestyi! Pisteet nollattu.");
-      showMessage("Jokeri ilmestyi! Pisteet nollattu!");
+      showMessage("Jokeri ilmestyi Pisteet nollattu!");
       updateScoreDisplay();
     } else {
       const cardText = card.suit + card.value;
@@ -264,17 +264,36 @@ div.addEventListener("click", () => {
     scoreBox.textContent = `Pisteet: ${score}`;
   }
 
-  function showMessage(text) {
-    messageBox.textContent = text;
-    messageBox.style.display = "block";
-    messageBox.style.opacity = "1";
-    setTimeout(() => {
-      messageBox.style.opacity = "0";
-      setTimeout(() => {
-        messageBox.style.display = "none";
-      }, 500);
-    }, 3000);
+const messageQueue = [];
+let messageShowing = false;
+
+function showMessage(text) {
+  messageQueue.push(text);
+  if (!messageShowing) {
+    displayNextMessage();
   }
+}
+
+function displayNextMessage() {
+  if (messageQueue.length === 0) {
+    messageShowing = false;
+    return;
+  }
+
+  messageShowing = true;
+  const message = messageQueue.shift();
+
+  messageBox.textContent = message;
+  messageBox.classList.add("show");
+
+  setTimeout(() => {
+    messageBox.classList.remove("show");
+    setTimeout(() => {
+      displayNextMessage();
+    }, 500); 
+  }, 2500); 
+}
+
 
 function parseCard(cardText) {
   const suit = cardText[0];
@@ -371,7 +390,7 @@ function evaluateAllVisibleTriplets() {
       });
 
       if (!allRevealed) {
-        console.log(`⏳ Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
+        console.log(`Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
         continue;
       }
 
@@ -380,7 +399,7 @@ function evaluateAllVisibleTriplets() {
 
       const pts = evaluate(cards);
 
-      console.log(`✅ Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
+      console.log(`Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
       console.log(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
 
       if (pts > 0) {
@@ -389,7 +408,7 @@ function evaluateAllVisibleTriplets() {
         hutiCountThisClick++;
       }
     } else {
-      console.log(`⛔ Triplet ${key} on jo arvioitu, ohitetaan.`);
+      console.log(`TRIPLETTI ${key} on jo arvioitu, ohitetaan.`);
     }
   }
 
@@ -399,7 +418,7 @@ function evaluateAllVisibleTriplets() {
     const comboPoints = Math.floor(totalPointsThisClick * comboMultiplier);
     score += comboPoints;
     showMessage(`Combo x${comboCount}! +${comboPoints}p`);
-    console.log(`🔥 Combo x${comboCount}! +${comboPoints}p (raw: ${totalPointsThisClick})`);
+    console.log(`Combo x${comboCount}! +${comboPoints}p (raw: ${totalPointsThisClick})`);
     misses = 0;
   } else if (newTripletsFound && hutiCountThisClick > 0) {
     misses += hutiCountThisClick;
@@ -407,7 +426,7 @@ function evaluateAllVisibleTriplets() {
     const penalty = penalties[misses] ?? (-8 * misses);
     score += penalty;
     showMessage(`Huti! ${misses} hutia: ${penalty}p`);
-    console.log(`❌ Huti! ${misses} hutia → ${penalty} pistettä`);
+    console.log(`Huti ${misses} hutia → ${penalty} pistettä`);
   }
 
   updateScoreDisplay();
