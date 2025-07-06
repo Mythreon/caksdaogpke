@@ -51,6 +51,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
   justify-content: center;
   margin-bottom: 20px;
   max-width: 25vw;
+  min-width: 25vw;
   margin-left: auto;
   margin-right: auto;
 }
@@ -58,15 +59,21 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
 .card {
   background: navy;
   color: transparent;
-  font-size: 6vw;  
+  font-size: 48px;       
   font-weight: bold;
-  padding: 15% 0;
+  width: 100px;          
+  height: 100px;        
+  padding: 0;
   border-radius: 8px;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 
     .card.revealed {
       background: white;
