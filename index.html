@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Korttipeli 3x3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
       header {
     position: fixed;
@@ -36,32 +37,37 @@
       font-family: sans-serif;
       text-align: center;
       padding: 30px;
-            color: white;
-
+      color: white;
 background: #0b630e;
 background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 54%, rgba(2, 125, 27, 1) 94%);
         }
         
         
         
-      .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .card {
-      background: navy;
-      color: transparent;
-      font-size: 24px;
-      font-weight: bold;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  
+  grid-gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  max-width: 25vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card {
+  background: navy;
+  color: transparent;
+  font-size: 6vw;  
+  font-weight: bold;
+  padding: 15% 0;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
     .card.revealed {
       background: white;
       color: black;
@@ -506,4 +512,3 @@ if (onlyJokers) {
 
 </body>
 </html>
-
