@@ -148,6 +148,10 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
     button:hover {
       background-color: #2e7d32;
     }
+
+    #totalScoreBox {
+      opacity: 0.0;
+    }
   </style>
 </head>
 <body>
@@ -157,6 +161,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
 <h1>Anna, kun selitän pelin.</h1>
 <div class="grid" id="cardGrid"></div>
 <div id="scoreBox">Pisteet: 0</div>
+<div id="totalScoreBox">Kaikkien pelien yhteispisteet: 0</div> 
 <button id="resetBtn">Resetoi peli</button>
 
 <div id="messageBox"></div>
@@ -252,6 +257,7 @@ if (onlyJokers) {
     if (isJoker) {
       div.textContent = "🃏Jokeri🃏";
       div.style.color = "purple";
+      div.style.fontSize = "15px";
       score = 0;
       misses = 0;
       comboCount = 0;
@@ -466,15 +472,30 @@ function evaluateAllVisibleTriplets() {
 
 
 
+const totalScoreBox = document.getElementById("totalScoreBox");
 
-  function saveScore(score) {
-    const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
-    scores.push(score);
-    scores.sort((a, b) => b - a);
-    if (scores.length > 5) scores.length = 5;
-    localStorage.setItem("highScores", JSON.stringify(scores));
-    renderHighScores();
-  }
+function updateTotalScoreDisplay() {
+  const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
+  const total = allScores.reduce((sum, s) => sum + s, 0);
+  totalScoreBox.textContent = `Kaikkien pelien yhteispisteet: ${total}`;
+}
+
+function saveScore(score) {
+  const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
+  scores.push(score);
+  scores.sort((a, b) => b - a);
+  if (scores.length > 5) scores.length = 5;
+  localStorage.setItem("highScores", JSON.stringify(scores));
+
+  const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
+  allScores.push(score);
+  localStorage.setItem("allScores", JSON.stringify(allScores));
+
+  renderHighScores();
+  updateTotalScoreDisplay();
+}
+
+updateTotalScoreDisplay();
 
 function renderHighScores() {
   const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
@@ -500,13 +521,14 @@ if (onlyJokers) {
     showMessage("🔥 Huijarimoodi aktivoitu! 🔥");
   }
 
-  function checkGameOver() {
-    const allRevealed = gridCards.flat().every(card => card !== null);
-    if (allRevealed) {
-      showMessage("Peli päättyi! Pisteesi: " + score);
-      if (score > 0) saveScore(score);
-    }
+function checkGameOver() {
+  const allRevealed = gridCards.flat().every(card => card !== null);
+  if (allRevealed) {
+    showMessage("Peli päättyi! Pisteesi: " + score);
+    saveScore(score);
   }
+}
+
 
 resetBtn.addEventListener("click", () => {
   initGame();
