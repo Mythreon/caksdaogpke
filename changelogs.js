@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <button id="closeChangelog" style="background: none; border: none; font-size: 20px; cursor: pointer; line-height: 1;">×</button>
     </div>
     <ul style="margin-top: 10px;">
-      <li><strong>v1.0.14</strong> - Korjattu ongelma, joka aiheutti sen, että saman pistemäärän peli näyttäytyisi kahdesti. <br> hieman muutettu jokerilogiikkaa toimimaan paremmin. </li>
+      <li><strong>v1.0.15</strong> - Jokerilogiikka toimii taas oikein. <br> Uudistettu korttianimaatio. <br> Korjattu kirjoitusvirheitä. <br> Muunneltu pari backend-asiaa, jotta huijaaminen olisi vaikeampaa. <br> lisätty laskuri, joka laskee kaikkien pelien yhteiset pisteet; tosin ei vielä käytössä.</li>
+      <li><strong>v1.0.14</strong> - Korjattu ongelma, joka aiheutti sen, että saman pistemäärän peli näyttäytyisi kahdesti. <br> Hieman muutettu jokerilogiikkaa toimimaan paremmin. </li>
       <li><strong>v1.0.13</strong> - Näyttää paremmalta mobiililaitteistolla</li>
       <li><strong>v1.0.12</strong> - Poistettu Klassisen ja Kompleksin pelimuotojen ero.<br>Vaihdettu värimaailmaa.</li>
       <li><strong>v1.0.11</strong> - Korjattu hutien lasku</li>
@@ -75,4 +76,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
