@@ -232,6 +232,9 @@ if (onlyJokers) {
   isJoker = true;
 } else {
 
+  if (score < -1 || score > 1) {
+   if (Math.random() < 0.0025) isJoker = true;
+  }
   if (score < -5 || score > 45) {
     if (Math.random() < 0.01) isJoker = true;
   }
@@ -351,9 +354,8 @@ function evaluate(triplet) {
   if (colorsSet.size === 1)
     return 1;
 
-  // Jos tässä asti päädyttiin, tarkistetaan kahden värin huti
   if (colorsSet.size > 1)
-    return -1;  // Huti -1p kahdesta eri väristä
+    return -1;  
 
   return 0;
 }
@@ -506,10 +508,10 @@ if (onlyJokers) {
     }
   }
 
-  resetBtn.addEventListener("click", () => {
-    if (score !== 0) saveScore(score);
-    initGame();
-  });
+resetBtn.addEventListener("click", () => {
+  initGame();
+});
+
 
   initGame();
   renderHighScores();
