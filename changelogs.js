@@ -21,33 +21,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const changelogBox = document.createElement("div");
   changelogBox.id = "changelogBox";
-  changelogBox.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h3 style="margin: 0;">Muutokset</h3>
-      <button id="closeChangelog" style="background: none; border: none; font-size: 20px; cursor: pointer; line-height: 1;">×</button>
-    </div>
-    <ul style="margin-top: 10px;">
-      <li><strong>v1.0.17</strong> - Lisätty infoboksiin lisää tietoa.</li>
-      <li><strong>v1.0.16</strong> - Lisätty infoboksi, joka näyttää sinulle sinun pelatut pelit sekä kokonaispisteet; eli, miten addiktoitunut olet.</li>
-      <li><strong>v1.0.15</strong> - Jokerilogiikka toimii taas oikein. <br> Uudistettu korttianimaatio. <br> Korjattu kirjoitusvirheitä. <br> Muunneltu pari backend-asiaa, jotta huijaaminen olisi vaikeampaa. <br> lisätty laskuri, joka laskee kaikkien pelien yhteiset pisteet; tosin ei vielä käytössä.</li>
-      <li><strong>v1.0.14</strong> - Korjattu ongelma, joka aiheutti sen, että saman pistemäärän peli näyttäytyisi kahdesti. <br> Hieman muutettu jokerilogiikkaa toimimaan paremmin. </li>
-      <li><strong>v1.0.13</strong> - Näyttää paremmalta mobiililaitteistolla</li>
-      <li><strong>v1.0.12</strong> - Poistettu Klassisen ja Kompleksin pelimuotojen ero.<br>Vaihdettu värimaailmaa.</li>
-      <li><strong>v1.0.11</strong> - Korjattu hutien lasku</li>
-      <li><strong>v1.0.1</strong> - Lisätty Changelog-painike ja korjattu tiettyjä ongelmia</li>
-      <li><strong>v1.0</strong> - Ensijulkaisu.</li>
-    </ul>
-  `;
+changelogBox.innerHTML = `
+  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
+    <h2 style="margin: 0; font-size: 18px; color: #fff;">Muutokset</h2>
+    <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
+  </div>
+  <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.0.18</strong>: Muutettu changelogin ulkonäköä.</li>
+    <li><strong style="color:#90ee90">v1.0.17</strong>: Lisätty infoboksiin lisää tietoa.</li>
+    <li><strong style="color:#90ee90">v1.0.16</strong>: Lisätty infoboksi, joka näyttää sinulle pelatut pelit ja kokonaispisteet.</li>
+    <li><strong style="color:#90ee90">v1.0.15</strong>: Jokerilogiikka toimii taas oikein. Uudistettu korttianimaatio. Korjattu kirjoitusvirheitä. Backend-päivityksiä. Lisätty pisteiden laskuri (ei vielä käytössä).</li>
+    <li><strong style="color:#90ee90">v1.0.14</strong>: Korjattu duplikaattipisteet. Jokerilogiikkaa parannettu.</li>
+    <li><strong style="color:#90ee90">v1.0.13</strong>: Parannettu ulkoasu mobiilissa.</li>
+    <li><strong style="color:#90ee90">v1.0.12</strong>: Poistettu pelimuotojen ero. Vaihdettu värimaailmaa.</li>
+    <li><strong style="color:#90ee90">v1.0.11</strong>: Korjattu hutien lasku.</li>
+    <li><strong style="color:#90ee90">v1.0.1</strong>: Lisätty changelog-painike. Korjauksia.</li>
+    <li><strong style="color:#90ee90">v1.0</strong>: Ensijulkaisu.</li>
+  </ul>
+`;
   changelogBox.style.position = "fixed";
   changelogBox.style.top = "50%";
   changelogBox.style.left = "50%";
   changelogBox.style.transform = "translate(-50%, -50%)";
-  changelogBox.style.background = "darkgreen";
-  changelogBox.style.color = "#222";
+  changelogBox.style.background = "#2d4d2d"; 
+  changelogBox.style.color = "#f0f0f0";       
+  changelogBox.style.maxWidth = "400px";
+  changelogBox.style.maxHeight = "80vh";
+  changelogBox.style.overflowY = "auto";
   changelogBox.style.padding = "16px 20px";
   changelogBox.style.borderRadius = "10px";
   changelogBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.4)";
-  changelogBox.style.maxWidth = "300px";
   changelogBox.style.zIndex = "10001";
   changelogBox.style.fontFamily = "sans-serif";
   changelogBox.style.fontSize = "14px";
