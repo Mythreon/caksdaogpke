@@ -304,6 +304,12 @@ let messageShowing = false;
 
 function showMessage(text) {
   messageQueue.push(text);
+
+  if (messageQueue.length > 5) {
+    const combined = messageQueue.splice(0, messageQueue.length).join(" | ");
+    messageQueue.push("📢 " + combined);
+  }
+
   if (!messageShowing) {
     displayNextMessage();
   }
@@ -328,6 +334,7 @@ function displayNextMessage() {
     }, 500); 
   }, 2500); 
 }
+
 
 
 function parseCard(cardText) {
@@ -540,8 +547,8 @@ resetBtn.addEventListener("click", () => {
   renderHighScores();
 </script>
 
-
-
+</body>
+</html>
 </body>
 </html>
 
