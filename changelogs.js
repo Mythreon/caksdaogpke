@@ -27,6 +27,8 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.0.20</strong>: Kerää enemmän dataa pelinsisäisesti. <br> Päivitetty backend-jokerilogiikkaa.</li>
+    <li><strong style="color:#90ee90">v1.0.19</strong>: Pari muutosta, jotka parantavat peliä.</li>
     <li><strong style="color:#90ee90">v1.0.18</strong>: Muutettu changelogin ulkonäköä.</li>
     <li><strong style="color:#90ee90">v1.0.17</strong>: Lisätty infoboksiin lisää tietoa.</li>
     <li><strong style="color:#90ee90">v1.0.16</strong>: Lisätty infoboksi, joka näyttää sinulle pelatut pelit ja kokonaispisteet.</li>
