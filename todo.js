@@ -1,1 +1,1 @@
-// ⚙ <--- Settings, Hide messages.
+// ⚙ ⚙︎ <--- Settings, Hide messages.
