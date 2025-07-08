@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.0.22</strong>: Korjattu mobiilinäkymää.</li>
     <li><strong style="color:#90ee90">v1.0.21</strong>: Korjattu erittäin kriittinen ongelma jokereiden ja ässien käyttäytymisessä. Lisätty pelistatistiikkasivulle lisää tietoa!</li>
     <li><strong style="color:#90ee90">v1.0.20</strong>: Kerää enemmän dataa pelinsisäisesti. <br> Päivitetty backend-jokerilogiikkaa.</li>
     <li><strong style="color:#90ee90">v1.0.19</strong>: Pari muutosta, jotka parantavat peliä.</li>
@@ -84,3 +85,4 @@ changelogBox.innerHTML = `
     }
   });
 });
+
