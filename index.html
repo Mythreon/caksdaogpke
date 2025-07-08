@@ -117,22 +117,27 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
       text-shadow: 1px 1px 2px #000;
 
     }
-    #highScores {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      margin-top: 25px;
-      text-align: left;
-      max-width: 200px;
-      margin-left: auto;
-      margin-right: auto;
-      background: rgba(0, 92, 11, 0.2);
-      padding: 10px;
-      border-radius: 8px;
-    }
-    #highScores h3 {
-      margin-top: 0;
-    }
+
+#highScores {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  margin-top: 25px;
+  text-align: left;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(0, 92, 11, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  display: block; 
+}
+
+@media (max-width: 768px) {
+  #highScores {
+    display: none;
+  }
+}
     button {
       margin-top: 10px;
       padding: 10px 20px;
@@ -172,6 +177,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
 </div>
 <script src="changelogs.js"></script>
 <script src="info.js"></script>
+<script src="hs.js"></script>
 
 <script>
 
