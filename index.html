@@ -279,7 +279,7 @@ for (let { condition, chance } of jokerChances) {
       evaluateAllVisibleTriplets();
     }
 
-          if (card.value === "A") {
+          if (!isJoker && card.value === "A") {
         aceCount++;
         const acePoints = aceCount + 1;
         score += acePoints;
@@ -339,8 +339,6 @@ function displayNextMessage() {
   }, 2500); 
 }
 
-
-
 function parseCard(cardText) {
   const suit = cardText[0];
   const value = cardText.slice(1);
@@ -377,8 +375,6 @@ function evaluate(triplet) {
 
   return 0;
 }
-
-
 
 function getAllTripletsFromGrid(grid) {
   const triplets = [];
