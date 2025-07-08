@@ -534,7 +534,23 @@ function checkGameOver() {
   if (allRevealed) {
     showMessage("Peli päättyi! Pisteesi: " + score);
     saveScore(score);
+      updateGameStats(score, aceCount, misses); 
   }
+}
+
+function updateGameStats(currentScore, currentAces, currentMisses) {
+  const completed = parseInt(localStorage.getItem("gamesCompleted") || "0") + 1;
+  localStorage.setItem("gamesCompleted", completed);
+
+  const totalAces = parseInt(localStorage.getItem("totalAces") || "0") + currentAces;
+  localStorage.setItem("totalAces", totalAces);
+
+  const totalMisses = parseInt(localStorage.getItem("totalMisses") || "0") + currentMisses;
+  localStorage.setItem("totalMisses", totalMisses);
+
+  const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
+  const average = allScores.length ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : 0;
+  localStorage.setItem("averageScore", average);
 }
 
 
@@ -545,6 +561,8 @@ resetBtn.addEventListener("click", () => {
 
   initGame();
   renderHighScores();
+
+
 </script>
 <!-- -->
 <script>
