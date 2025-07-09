@@ -433,6 +433,11 @@ function updateGameStats(currentScore, currentAces, currentMisses) {
 resetBtn.addEventListener("click", () => {
   initGame();
 });
+resetBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // Korjaa ongelman mobiililaitteilla. ÄLÄ KOSKE!
+  initGame();
+});
+
 
 
   initGame();
