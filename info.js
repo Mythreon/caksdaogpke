@@ -114,17 +114,18 @@ infoBtn.addEventListener("click", () => {
   const totalAces = parseInt(localStorage.getItem("totalAces") || "0");
   const totalMisses = parseInt(localStorage.getItem("totalMisses") || "0");
 
-  statsText.innerHTML = `
-    <h3 style="margin-top: 0;">Pelitilastot</h3>
-    <p> Pelatut pelit: <strong>${totalGames}</strong></p>
-    <p> Pelit pelattu loppuun: <strong>${gamesCompleted}</strong></p>
-    <p> Keskimääräinen pistemäärä: <strong>${averageScore}</strong></p>
-    <p> Kokonaistulokset: <strong>${totalPoints} pistettä</strong></p>
-    <p> Aikaa käytetty sivustolla: <strong>${minutes} min ${seconds} s</strong></p>
-    <p> Ässiä yhteensä: <strong>${totalAces}</strong></p>
-    <p> Huteja yhteensä: <strong>${totalMisses}</strong></p>
-    <p> Jokereita nähty: <strong>${jokerCount}</strong></p>
-  `;
+statsText.innerHTML = `
+  <h3 style="margin-top: 0;">Pelitilastot</h3>
+  <p> Pelatut pelit: <strong>${totalGames}</strong></p>
+<!-- <p> Pelit pelattu loppuun: <strong>${gamesCompleted}</strong></p> -->
+  <p> Keskimääräinen pistemäärä: <strong>${averageScore}</strong></p>
+  <p> Kokonaistulokset: <strong>${totalPoints} pistettä</strong></p>
+  <p> Aikaa käytetty sivustolla: <strong>${minutes} min ${seconds} s</strong></p>
+  <p> Ässiä yhteensä: <strong>${totalAces}</strong></p>
+  <p> Huteja yhteensä: <strong>${totalMisses}</strong></p>
+  <p> Jokereita nähty: <strong>${jokerCount}</strong></p>
+`;
+
 
   modal.style.display = "block";
   overlay.style.display = "block";
@@ -149,7 +150,3 @@ function updateStats(score, comboCount, jokerSeen) {
 
   localStorage.setItem("gameStats", JSON.stringify(stats));
 }
-
-// asetukset
-
-
