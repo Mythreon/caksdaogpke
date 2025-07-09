@@ -96,6 +96,15 @@ if (onlyJokers) {
   isJoker = true;
 } else {
 
+const asetukset = (typeof window.getAsetukset === "function")
+  ? window.getAsetukset()
+  : { hardMode: false };
+
+if (asetukset.hardMode) {
+  if (Math.random() < 0.125) { 
+    isJoker = true;
+  }
+} else {}
 const jokerChances = [
   { condition: score < -1 || score > 1, chance: 0.0025 },
   { condition: score < -5 || score > 45, chance: 0.01 },
