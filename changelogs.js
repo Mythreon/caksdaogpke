@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.1.06</strong>: Korjattu kriittinen ongelma, jonka aiheutti edellisen visuaalisen ongelman korjaaminen (taas).</li>
     <li><strong style="color:#90ee90">v1.1.05</strong>: Korjattu kriittinen ongelma, jonka aiheutti edellisen visuaalisen ongelman korjaaminen.</li>
     <li><strong style="color:#90ee90">v1.1.04</strong>: Korjattu muutama visuaalinen ongelma.</li>
     <li><strong style="color:#90ee90">v1.1.03</strong>: Parannettu pelin värimaailmaa. <br> Lisätty kustomoitu scrolltrack. <br> Lisätty paremmat napit (Jotka koodasin itse. En käyttänyt mitään resurssipankkeja, vaan tein ne itse!!!!!!!!!!) <br> Korjasin visuaalisen ongelman joka ärsytti minua itseäni. </li>
@@ -137,3 +138,4 @@ document.head.appendChild(style);
     }
   });
 });
+
