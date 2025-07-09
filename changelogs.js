@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.1.03</strong>: Parannettu pelin värimaailmaa. <br> Lisätty kustomoitu scrolltrack. </li>
     <li><strong style="color:#90ee90">v1.1.02</strong>: Lisätty "Hard Mode". <br> Korjattu mobiilinäkymää.</li>
     <li><strong style="color:#90ee90">v1.1.01</strong>: Parannettu pelin värimaailmaa. <br> Lisätty jokerille animaatio. <br> Backend-muutoksia.</li>
     <li><strong style="color:#90ee90">v1.1</strong>: Lisätty asetukset. <br> Aloitettu savegame-prosessin luominen.</li>
@@ -46,6 +47,52 @@ changelogBox.innerHTML = `
     <li><strong style="color:#90ee90">v1.0</strong>: Ensijulkaisu.</li>
   </ul>
 `;
+const changelogList = changelogBox.querySelector("ul");
+changelogList.style.maxHeight = "300px";
+changelogList.style.overflowY = "auto";
+changelogList.style.paddingRight = "10px";
+
+
+changelogList.style.scrollbarWidth = "thin";
+changelogList.style.scrollbarColor = "#4caf50rgb(26, 26, 26, 0.0)";
+
+const style = document.createElement("style");
+style.textContent = `
+  #changelogBox ul::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+  }
+
+  #changelogBox ul::-webkit-scrollbar-track {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  #changelogBox ul::-webkit-scrollbar-track-piece {
+    background: transparent !important;
+  }
+
+  #changelogBox ul::-webkit-scrollbar-thumb {
+    background-color: #4caf50;
+    border-radius: 4px;
+    border: none;
+  }
+
+  #changelogBox ul::-webkit-scrollbar-thumb:hover {
+    background-color: #66bb6a;
+  }
+
+  #changelogBox ul {
+    scrollbar-width: thin;
+    scrollbar-color: #4caf50 transparent;
+  }
+`;
+document.head.appendChild(style);
+
+document.head.appendChild(style);
+
+document.head.appendChild(style);
+
   changelogBox.style.position = "fixed";
   changelogBox.style.top = "50%";
   changelogBox.style.left = "50%";
