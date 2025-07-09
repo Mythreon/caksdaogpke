@@ -1,4 +1,4 @@
-      header {
+header {
     position: fixed;
     top: 10px;
     left: 10px;
@@ -11,21 +11,17 @@
     font-size: 16px;
     z-index: 10000;
   }
-
-  header a {
+header a {
     margin-right: 15px;
     text-decoration: none;
     color: #333;
     cursor: pointer;
     transition: color 0.2s ease;
   }
-
-  header a:hover {
+header a:hover {
     color: #007bff;
   }
-
-
-    body {
+body {
       font-family: sans-serif;
       text-align: center;
       padding: 30px;
@@ -47,6 +43,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
 }
 
 .card {
+  font-family: "Segoe UI Symbol", "Apple Color Emoji", "Noto Color Emoji", "Arial Unicode MS", sans-serif;
   background: linear-gradient(145deg, #1a237e, #283593);
   color: transparent;
   font-size: 40px;       
@@ -102,7 +99,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-    #scoreBox {
+#scoreBox {
       margin-bottom: 15px;
       font-size: 22px;
       font-weight: bold;
@@ -136,7 +133,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
     font-size: 36px;
   }
 }
-    button {
+button {
       margin-top: 10px;
       padding: 10px 20px;
       font-size: 18px;
@@ -148,7 +145,7 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
       box-shadow: 0 3px 6px rgba(0,0,0,0.3);
       transition: background-color 0.3s ease;
     }
-    button:hover {
+button:hover {
       background-color: #2e7d32;
     }
 
