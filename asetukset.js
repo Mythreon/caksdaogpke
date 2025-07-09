@@ -1,7 +1,8 @@
 const ASETUKSET_KEY = "asetukset";
 
 const oletusAsetukset = {
-  showMessages: true
+  showMessages: true,
+  hardMode: false,
 };
 
 function haeAsetukset() {
@@ -46,6 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
     <label style="display: block; margin-top: 12px; color: #f0f0f0;">
       <input type="checkbox" id="toggleMessages"> Näytä viestit
     </label>
+    <label style="display: block; margin-top: 8px; color: #f0f0f0;">
+    <input type="checkbox" id="toggleHardMode"> Hard Mode 
+    </label>
+
   `;
   menu.style.position = "fixed";
   menu.style.top = "50%";
@@ -72,6 +77,15 @@ document.addEventListener("DOMContentLoaded", () => {
     asetukset.showMessages = toggleMessages.checked;
     tallennaAsetukset(asetukset);
   });
+
+  const toggleHardMode = menu.querySelector("#toggleHardMode");
+  toggleHardMode.checked = asetukset.hardMode;
+
+  toggleHardMode.addEventListener("change", () => {
+  asetukset.hardMode = toggleHardMode.checked;
+  tallennaAsetukset(asetukset);
+});
+
 
   let menuVisible = false;
 
