@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const sessionStart = Date.now(); // Todo: ei toimi applella?
+  const sessionStart = Date.now(); // Tallennetaan session alkamisaika
 
   const infoBtn = document.createElement("a");
   infoBtn.id = "infoButton";
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fontFamily: "sans-serif",
     cursor: "pointer",
     textDecoration: "none",
-    zIndex: "10001",
+    zIndex: "9998",
     boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
     transition: "color 0.2s ease",
   });
@@ -149,3 +149,7 @@ function updateStats(score, comboCount, jokerSeen) {
 
   localStorage.setItem("gameStats", JSON.stringify(stats));
 }
+
+// asetukset
+
+
