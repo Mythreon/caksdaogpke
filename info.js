@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const sessionStart = Date.now(); // Tallennetaan session alkamisaika
+  const sessionStart = Date.now(); // Todo: ei toimi applella?
 
   const infoBtn = document.createElement("a");
   infoBtn.id = "infoButton";
