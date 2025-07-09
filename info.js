@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const sessionStart = Date.now(); // Tallennetaan session alkamisaika
+  const sessionStart = Date.now(); // Tallennetaan session alkamisaika => EI TOIMI IOS!
 
   const infoBtn = document.createElement("a");
   infoBtn.id = "infoButton";
