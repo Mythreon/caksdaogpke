@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = "10000";
+  overlay.style.zIndex = "10002";
   overlay.style.display = "none";
 
   const menu = document.createElement("div");
@@ -117,4 +117,3 @@ menu.innerHTML = `
     toggleMenu(false);
   });
 });
-
