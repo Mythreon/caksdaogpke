@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     right: "10px",
     width: "40px",
     height: "40px",
-    backgroundColor: "#fff176",
+    backgroundColor: "rgba(0, 92, 11, 0.8)",
     color: "#333",
     fontWeight: "bold",
     fontSize: "20px",
