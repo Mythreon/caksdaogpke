@@ -178,6 +178,8 @@ background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 
 <script src="changelogs.js"></script>
 <script src="info.js"></script>
 <script src="hs.js"></script>
+<script src="asetukset.js"></script>
+<script src="savegame.js"></script>
 
 <script>
 
@@ -313,6 +315,12 @@ const messageQueue = [];
 let messageShowing = false;
 
 function showMessage(text) {
+  const asetukset = (typeof window.getAsetukset === "function")
+    ? window.getAsetukset()
+    : { showMessages: true };
+
+  if (!asetukset.showMessages) return;
+
   messageQueue.push(text);
 
   if (messageQueue.length > 5) {
@@ -324,6 +332,7 @@ function showMessage(text) {
     displayNextMessage();
   }
 }
+
 
 function displayNextMessage() {
   if (messageQueue.length === 0) {
