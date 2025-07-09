@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = "10000";
+  overlay.style.zIndex = "10002";
   overlay.style.display = "none";
 
   const changelogBox = document.createElement("div");
@@ -27,7 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
-    <li><strong style="color:#90ee90">v1.1.03</strong>: Parannettu pelin värimaailmaa. <br> Lisätty kustomoitu scrolltrack. </li>
+    <li><strong style="color:#90ee90">v1.1.03</strong>: Parannettu pelin värimaailmaa. <br> Lisätty kustomoitu scrolltrack. <br> Lisätty paremmat napit (Jotka koodasin itse. En käyttänyt mitään resurssipankkeja, vaan tein ne itse!!!!!!!!!!) <br> Korjasin visuaalisen ongelman joka ärsytti minua itseäni. </li>
     <li><strong style="color:#90ee90">v1.1.02</strong>: Lisätty "Hard Mode". <br> Korjattu mobiilinäkymää.</li>
     <li><strong style="color:#90ee90">v1.1.01</strong>: Parannettu pelin värimaailmaa. <br> Lisätty jokerille animaatio. <br> Backend-muutoksia.</li>
     <li><strong style="color:#90ee90">v1.1</strong>: Lisätty asetukset. <br> Aloitettu savegame-prosessin luominen.</li>
