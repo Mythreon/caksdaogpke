@@ -39,19 +39,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const menu = document.createElement("div");
   menu.id = "asetuksetMenu";
-  menu.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
-      <h2 style="margin: 0; font-size: 18px; color: #fff;">Asetukset</h2>
-      <button id="closeSettings" style="background: none; border: none; font-size: 12px; color: #fff; cursor: pointer;">×</button>
-    </div>
-    <label style="display: block; margin-top: 12px; color: #f0f0f0;">
-      <input type="checkbox" id="toggleMessages"> Näytä viestit
-    </label>
-    <label style="display: block; margin-top: 8px; color: #f0f0f0;">
-    <input type="checkbox" id="toggleHardMode"> Hard Mode 
-    </label>
+menu.innerHTML = `
+  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
+    <h2 style="margin: 0; font-size: 18px; color: #fff;">Asetukset</h2>
+    <button id="closeSettings" style="background: none; border: none; font-size: 12px; color: #fff; cursor: pointer;">×</button>
+  </div>
 
-  `;
+  <label style="display: flex; align-items: center; margin-top: 12px; color: #f0f0f0;">
+    <div class="custom-toggle">
+      <input type="checkbox" id="toggleMessages">
+      <span class="slider"></span>
+    </div>
+    Näytä viestit
+  </label>
+
+  <label style="display: flex; align-items: center; margin-top: 12px; color: #f0f0f0;">
+    <div class="custom-toggle">
+      <input type="checkbox" id="toggleHardMode">
+      <span class="slider"></span>
+    </div>
+    Hard Mode
+  </label>
+`;
+
   menu.style.position = "fixed";
   menu.style.top = "50%";
   menu.style.left = "50%";
@@ -107,3 +117,4 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleMenu(false);
   });
 });
+
