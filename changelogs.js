@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.1.02</strong>: Lisätty "Hard Mode". <br> Korjattu mobiilinäkymää.</li>
     <li><strong style="color:#90ee90">v1.1.01</strong>: Parannettu pelin värimaailmaa. <br> Lisätty jokerille animaatio. <br> Backend-muutoksia.</li>
     <li><strong style="color:#90ee90">v1.1</strong>: Lisätty asetukset. <br> Aloitettu savegame-prosessin luominen.</li>
     <li><strong style="color:#90ee90">v1.0.22</strong>: Korjattu mobiilinäkymää.</li>
