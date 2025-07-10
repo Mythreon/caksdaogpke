@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.1.11</strong>: Korjattu ongelma, jossa Main Menu latautui myöhemmin kuin peli.</li>
     <li><strong style="color:#90ee90">v1.1.10</strong>: Lisätty Main Menu, ja korjattu pari visuaalista ongelmaa.</li>
     <li><strong style="color:#90ee90">v1.1.09</strong>: Korjattu ongelma, joka aiheutti pelin jumittumisen IOS laitteilla.</li>
     <li><strong style="color:#90ee90">v1.1.08</strong>: Korjattu ongelma changelogin kanssa.</li>
