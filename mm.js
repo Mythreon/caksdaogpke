@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+      const loadingScreen = document.getElementById("loadingScreen");
+  if (loadingScreen) {
+    loadingScreen.style.display = "none";
+  }
   const style = document.createElement("style");
   style.textContent = `
     #mainMenu {
