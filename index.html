@@ -362,10 +362,22 @@ function evaluateAllVisibleTriplets() {
 const totalScoreBox = document.getElementById("totalScoreBox");
 
 function updateTotalScoreDisplay() {
-  const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
-  const total = allScores.reduce((sum, s) => sum + s, 0);
+  let allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
+
+  let rawTotal = allScores.reduce((sum, s) => sum + Number(s), 0); 
+  let total = Math.round(Number(rawTotal.toFixed(5))); 
+
+  if (total === 666) {
+    total += 1; // You wouldn't want the devil to win, would you?
+    allScores.push(1); 
+    localStorage.setItem("allScores", JSON.stringify(allScores));
+  }
+
   totalScoreBox.textContent = `Kaikkien pelien yhteispisteet: ${total}`;
 }
+
+
+
 
 function saveScore(score) {
   const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
