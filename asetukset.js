@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay.style.width = "100%";
   overlay.style.height = "100%";
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  overlay.style.zIndex = "10000";
+  overlay.style.zIndex = "100001";
   overlay.style.display = "none";
 
   const menu = document.createElement("div");
@@ -71,7 +71,7 @@ menu.innerHTML = `
   menu.style.padding = "16px 20px";
   menu.style.borderRadius = "10px";
   menu.style.boxShadow = "0 4px 10px rgba(0,0,0,0.4)";
-  menu.style.zIndex = "10001";
+  menu.style.zIndex = "100002";
   menu.style.maxWidth = "300px";
   menu.style.fontFamily = "sans-serif";
   menu.style.fontSize = "14px";
@@ -105,6 +105,8 @@ menu.innerHTML = `
     overlay.style.display = state ? "block" : "none";
   }
 
+  window.toggleMenu = toggleMenu; 
+
   gearBtn.addEventListener("click", () => {
     toggleMenu(!menuVisible);
   });
@@ -117,4 +119,3 @@ menu.innerHTML = `
     toggleMenu(false);
   });
 });
-
