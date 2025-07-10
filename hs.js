@@ -1,7 +1,5 @@
-// Okay I had a bit of a struggle with this one. Not even kidding, out of anything this probably took me the longest to write
-// :)
-
-document.addEventListener("DOMContentLoaded", () => {
+// This by far was the hardest out of anything to create
+  document.addEventListener("DOMContentLoaded", () => {
   const highScores = document.getElementById("highScores");
   if (!highScores) return;
 
@@ -15,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     height: "100vh",
     backgroundColor: "rgba(0,0,0,0.5)",
     display: "none",
-    zIndex: "9998"
+    zIndex: "99998"
   });
   document.body.appendChild(overlay);
 
@@ -46,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    zIndex: "9999",
+    zIndex: "99999",
     backgroundColor: "rgba(0,92,11,0.95)",
     padding: "20px",
     borderRadius: "12px",
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     lineHeight: "40px",
     boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
     cursor: "pointer",
-    zIndex: "10000"
+    zIndex: "100000"
   });
   document.body.appendChild(scoreBtn);
 
