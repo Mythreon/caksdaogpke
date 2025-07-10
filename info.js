@@ -1,5 +1,46 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const sessionStart = Date.now(); // Tallennetaan session alkamisaika => EI TOIMI IOS!
+  const sessionStart = Date.now();
+
+  const SECRET_SALT = "🧂salainenhommeliiniTortelliinilalalalalalalalalalalalalalalalallalal3573jnijnH8sfnSJNFSDSKFN98dNGNDGKJSNFOJSIDHG8dg87sguhdifhgp";
+
+  function hashScore(scoreArray, secret = SECRET_SALT) {
+    const data = scoreArray.join(",") + secret;
+    let hash = 0;
+    for (let i = 0; i < data.length; i++) {
+      hash = ((hash << 5) - hash) + data.charCodeAt(i);
+      hash |= 0;
+    }
+    return hash.toString();
+  }
+
+  function getSafeAllScores() {
+    const raw = localStorage.getItem("allScores");
+    const hash = localStorage.getItem("allScoresHash");
+    if (!raw) return [];
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const expectedHash = hashScore(parsed);
+        if (expectedHash === hash) {
+          return parsed;
+        } else {
+          console.warn("⚠️ Huom: Pistetiedot voivat olla muokattuja!");
+          alert("⚠️ Tallennettu pistetieto on mahdollisesti muokattu ja nollataan.");
+          localStorage.removeItem("allScores");
+          localStorage.removeItem("allScoresHash");
+        }
+      }
+    } catch (e) {
+      console.warn("Virheellinen pistedata: ", e);
+    }
+
+    return [];
+  }
+
+  function round(n) {
+    return Math.round(n);
+  }
 
   const infoBtn = document.createElement("a");
   infoBtn.id = "infoButton";
@@ -98,56 +139,39 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(overlay);
   document.body.appendChild(modal);
 
-infoBtn.addEventListener("click", () => {
-  const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
-  const totalPoints = allScores.reduce((sum, s) => sum + s, 0);
-  const totalGames = allScores.length;
+  infoBtn.addEventListener("click", () => {
+    const allScores = getSafeAllScores();
+    const totalPoints = round(allScores.reduce((sum, s) => sum + s, 0));
+    const totalGames = allScores.length;
 
-  const totalTime = parseInt(localStorage.getItem("totalTimeSpent") || "0", 10);
-  const minutes = Math.floor(totalTime / 60);
-  const seconds = totalTime % 60;
+    const totalTime = parseInt(localStorage.getItem("totalTimeSpent") || "0", 10);
+    const minutes = Math.floor(totalTime / 60);
+    const seconds = totalTime % 60;
 
-  const jokerCount = parseInt(localStorage.getItem("jokerCount") || "0");
+    const jokerCount = parseInt(localStorage.getItem("jokerCount") || "0");
+    const averageScore = parseInt(localStorage.getItem("averageScore") || "0");
+    const gamesCompleted = parseInt(localStorage.getItem("gamesCompleted") || "0");
+    const totalAces = parseInt(localStorage.getItem("totalAces") || "0");
+    const totalMisses = parseInt(localStorage.getItem("totalMisses") || "0");
 
-  const averageScore = parseInt(localStorage.getItem("averageScore") || "0");
-  const gamesCompleted = parseInt(localStorage.getItem("gamesCompleted") || "0");
-  const totalAces = parseInt(localStorage.getItem("totalAces") || "0");
-  const totalMisses = parseInt(localStorage.getItem("totalMisses") || "0");
+    statsText.innerHTML = `
+      <h3 style="margin-top: 0;">Pelitilastot</h3>
+      <p> Pelatut pelit: <strong>${totalGames}</strong></p>
+      <p> Keskimääräinen pistemäärä: <strong>${averageScore}</strong></p>
+      <p> Kokonaistulokset: <strong>${totalPoints} pistettä</strong></p>
+      <p> Aikaa käytetty sivustolla: <strong>${minutes} min ${seconds} s</strong></p>
+      <p> Ässiä yhteensä: <strong>${totalAces}</strong></p>
+      <p> Huteja yhteensä: <strong>${totalMisses}</strong></p>
+      <p> Jokereita nähty: <strong>${jokerCount}</strong></p>
+    `;
 
-statsText.innerHTML = `
-  <h3 style="margin-top: 0;">Pelitilastot</h3>
-  <p> Pelatut pelit: <strong>${totalGames}</strong></p>
-<!-- <p> Pelit pelattu loppuun: <strong>${gamesCompleted}</strong></p> -->
-  <p> Keskimääräinen pistemäärä: <strong>${averageScore}</strong></p>
-  <p> Kokonaistulokset: <strong>${totalPoints} pistettä</strong></p>
-  <p> Aikaa käytetty sivustolla: <strong>${minutes} min ${seconds} s</strong></p>
-  <p> Ässiä yhteensä: <strong>${totalAces}</strong></p>
-  <p> Huteja yhteensä: <strong>${totalMisses}</strong></p>
-  <p> Jokereita nähty: <strong>${jokerCount}</strong></p>
-`;
-
-
-  modal.style.display = "block";
-  overlay.style.display = "block";
-});
+    modal.style.display = "block";
+    overlay.style.display = "block";
+  });
 
   window.addEventListener("beforeunload", () => {
-    const sessionDuration = Math.floor((Date.now() - sessionStart) / 1000); 
+    const sessionDuration = Math.floor((Date.now() - sessionStart) / 1000);
     const existingTime = parseInt(localStorage.getItem("totalTimeSpent") || "0", 10);
     localStorage.setItem("totalTimeSpent", existingTime + sessionDuration);
   });
 });
-
-// 
-
-function updateStats(score, comboCount, jokerSeen) {
-  const stats = JSON.parse(localStorage.getItem("gameStats") || "{}");
-  stats.totalGames = (stats.totalGames || 0) + 1;
-  stats.maxScore = Math.max(stats.maxScore || 0, score);
-  stats.maxCombo = Math.max(stats.maxCombo || 0, comboCount);
-  stats.jokersSeen = (stats.jokersSeen || 0) + (jokerSeen ? 1 : 0);
-  stats.totalTime = (stats.totalTime || 0) + sessionTimeInSeconds;
-
-  localStorage.setItem("gameStats", JSON.stringify(stats));
-}
-
