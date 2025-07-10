@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     width: "100%",
     height: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: "19999",
+    zIndex: "199999",
     display: "none",
   });
 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     padding: "20px",
     borderRadius: "12px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.4)",
-    zIndex: "20000",
+    zIndex: "200000",
     display: "none",
     minWidth: "280px",
     maxWidth: "80vw",
@@ -150,3 +150,4 @@ function updateStats(score, comboCount, jokerSeen) {
 
   localStorage.setItem("gameStats", JSON.stringify(stats));
 }
+
