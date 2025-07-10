@@ -361,23 +361,42 @@ function evaluateAllVisibleTriplets() {
 
 const totalScoreBox = document.getElementById("totalScoreBox");
 
+function hashScore(scoreArray, secret = "🧂salainenhommeliiniTortelliinilalalalalalalalalalalalalalalalallalal3573jnijnH8sfnSJNFSDSKFN98dNGNDGKJSNFOJSIDHG8dg87sguhdifhgp") {
+  const data = scoreArray.join(",") + secret;
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    hash = ((hash << 5) - hash) + data.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash.toString();
+}
+
 function updateTotalScoreDisplay() {
   let allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
 
-  let rawTotal = allScores.reduce((sum, s) => sum + Number(s), 0); 
-  let total = Math.round(Number(rawTotal.toFixed(5))); 
+  let rawTotal = allScores.reduce((sum, s) => sum + Number(s), 0);
+  let total = Math.round(Number(rawTotal.toFixed(5)));
 
   if (total === 666) {
     total += 1; // You wouldn't want the devil to win, would you?
-    allScores.push(1); 
+    allScores.push(1);
     localStorage.setItem("allScores", JSON.stringify(allScores));
   }
+
+  localStorage.setItem("allScoresHash", hashScore(allScores));
 
   totalScoreBox.textContent = `Kaikkien pelien yhteispisteet: ${total}`;
 }
 
-
-
+function hashScore(scoreArray, secret = "🧂salainenhommeliiniTortelliinilalalalalalalalalalalalalalalalallalal3573jnijnH8sfnSJNFSDSKFN98dNGNDGKJSNFOJSIDHG8dg87sguhdifhgp") {
+  const data = scoreArray.join(",") + secret;
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    hash = ((hash << 5) - hash) + data.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash.toString();
+}
 
 function saveScore(score) {
   const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
@@ -388,11 +407,14 @@ function saveScore(score) {
 
   const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
   allScores.push(score);
+
   localStorage.setItem("allScores", JSON.stringify(allScores));
+  localStorage.setItem("allScoresHash", hashScore(allScores));
 
   renderHighScores();
   updateTotalScoreDisplay();
 }
+
 
 updateTotalScoreDisplay();
 
@@ -458,6 +480,7 @@ resetBtn.addEventListener("touchstart", (e) => {
   initGame();
   renderHighScores();
 
+  
 
 </script>
 <!-- -->
@@ -465,3 +488,4 @@ resetBtn.addEventListener("touchstart", (e) => {
 </script>
 </body>
 </html>
+
