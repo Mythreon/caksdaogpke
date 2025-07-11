@@ -17,7 +17,7 @@
 <div class="grid" id="cardGrid"></div>
 <div id="scoreBox">Pisteet: 0</div>
 <div id="totalScoreBox" alt="debuggingValueScoreBoard">Kaikkien pelien yhteispisteet: 0</div> 
-<button id="resetBtn">Resetoi peli</button>
+<button id="resetBtn">Lopeta peli</button>
 
 <div id="messageBox"></div>
 
@@ -118,6 +118,17 @@ const jokerChances = [
   { condition: score < -5 || score > 45, chance: 0.01 },
   { condition: score < -50 || score > 100, chance: 0.05 },
   { condition: score < -100 || score > 250, chance: 0.1 },
+  { condition: score < -101 || score > 300, chance: 0.15 }, // Honestly, nobody will probably get a score above 300 legimately but.... 
+  { condition: score < -102 || score > 350, chance: 0.2 },
+  { condition: score < -103 || score > 400, chance: 0.3 },
+  { condition: score < -104 || score > 440, chance: 0.4 },
+  { condition: score < -105 || score > 500, chance: 0.5 }, // Fun fact; 500 is impossible at the time of writing this.
+  { condition: score < -106 || score > 600, chance: 0.6 },
+  { condition: score < -107 || score > 700, chance: 0.7 },
+  { condition: score < -108 || score > 800, chance: 0.8 },
+  { condition: score < -109 || score > 900, chance: 0.9 },
+
+
 ];
 
 for (let { condition, chance } of jokerChances) {
