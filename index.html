@@ -13,7 +13,6 @@
 </div>
 <header>
 </header>
-
 <h1>Anna, kun selitän pelin.</h1>
 <div class="grid" id="cardGrid"></div>
 <div id="scoreBox">Pisteet: 0</div>
@@ -36,7 +35,6 @@
 
 
 <script>
-
   const suits = ["♠", "♥", "♦", "♣"];
   const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   let deck = [];
@@ -47,6 +45,10 @@
   let onlyJokers = false;
   let comboCount = 0;
   let evaluatedTriplets = [];
+  let aceCount = 0;
+
+
+
 
   const grid = document.getElementById("cardGrid");
   const scoreBox = document.getElementById("scoreBox");
@@ -178,14 +180,21 @@ for (let { condition, chance } of jokerChances) {
 const messageQueue = [];
 let messageShowing = false;
 
-function showMessage(text) {
+function showMessage(text, priority = false) {
   const asetukset = (typeof window.getAsetukset === "function")
     ? window.getAsetukset()
     : { showMessages: true };
 
   if (!asetukset.showMessages) return;
 
-  messageQueue.push(text);
+  if (priority) {
+    if (messageQueue.length < 5) {
+      messageQueue.length = 0;
+    }
+    messageQueue.unshift(text);
+  } else {
+    messageQueue.push(text);
+  }
 
   if (messageQueue.length > 5) {
     const combined = messageQueue.splice(0, messageQueue.length).join(" | ");
@@ -196,6 +205,7 @@ function showMessage(text) {
     displayNextMessage();
   }
 }
+
 
 
 function displayNextMessage() {
@@ -445,7 +455,7 @@ if (onlyJokers) {
 function checkGameOver() {
   const allRevealed = gridCards.flat().every(card => card !== null);
   if (allRevealed) {
-    showMessage("Peli päättyi! Pisteesi: " + score);
+  showMessage("Peli päättyi! Pisteesi: " + score, true);
     saveScore(score);
       updateGameStats(score, aceCount, misses); 
   }
@@ -465,7 +475,6 @@ function updateGameStats(currentScore, currentAces, currentMisses) {
   const average = allScores.length ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : 0;
   localStorage.setItem("averageScore", average);
 }
-
 
 resetBtn.addEventListener("click", () => {
   initGame();
@@ -488,4 +497,3 @@ resetBtn.addEventListener("touchstart", (e) => {
 </script>
 </body>
 </html>
-
