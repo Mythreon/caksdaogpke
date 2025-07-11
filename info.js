@@ -1,7 +1,65 @@
+// This code is meant to be hard to read. 
+
 document.addEventListener("DOMContentLoaded", () => {
   const sessionStart = Date.now();
 
   const SECRET_SALT = "🧂salainenhommeliiniTortelliinilalalalalalalalalalalalalalalalallalal3573jnijnH8sfnSJNFSDSKFN98dNGNDGKJSNFOJSIDHG8dg87sguhdifhgp";
+  const SECRET_ENCRYPTION_KEY = "superS4lted🔒keyTSAHUFSHdfdsojgkflSN9NGISNIJGNDF89GDNGInidngosjndgsd8g98goiGHSDGODNGkirjoitantahanjojotainettaseolisivaikeampaasaadaselville💜💜💜💜💜💜💜💜💜💜💖😳pariemojia💀😳ortelliini2025!";
+
+  async function getKeyMaterial(password) {
+    const enc = new TextEncoder();
+    return crypto.subtle.importKey(
+      "raw",
+      enc.encode(password),
+      { name: "PBKDF2" },
+      false,
+      ["deriveKey"]
+    );
+  }
+
+  async function deriveKey(password) {
+    const salt = new TextEncoder().encode("static-salt-used");
+    const keyMaterial = await getKeyMaterial(password);
+    return crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        salt,
+        iterations: 100000,
+        hash: "SHA-256"
+      },
+      keyMaterial,
+      { name: "AES-GCM", length: 256 },
+      false,
+      ["encrypt", "decrypt"]
+    );
+  }
+
+  async function encryptData(data, password) {
+    const key = await deriveKey(password);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encoded = new TextEncoder().encode(data);
+    const ciphertext = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv },
+      key,
+      encoded
+    );
+    return {
+      iv: Array.from(iv),
+      encrypted: btoa(String.fromCharCode(...new Uint8Array(ciphertext)))
+    };
+  }
+
+  async function decryptData(encryptedData, ivArray, password) {
+    const key = await deriveKey(password);
+    const iv = new Uint8Array(ivArray);
+    const data = Uint8Array.from(atob(encryptedData), c => c.charCodeAt(0));
+    const decrypted = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv },
+      key,
+      data
+    );
+    return new TextDecoder().decode(decrypted);
+  }
 
   function hashScore(scoreArray, secret = SECRET_SALT) {
     const data = scoreArray.join(",") + secret;
@@ -45,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const infoBtn = document.createElement("a");
   infoBtn.id = "infoButton";
   infoBtn.textContent = "(i)";
-
   Object.assign(infoBtn.style, {
     position: "fixed",
     top: "50px",
@@ -94,8 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    background: "darkgreen",
-    color: "#000",
+    background: "#2d4d2d",
+    color: "#f0f0f0",
     padding: "20px",
     borderRadius: "12px",
     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.4)",
@@ -122,6 +179,139 @@ document.addEventListener("DOMContentLoaded", () => {
     fontSize: "16px",
     cursor: "pointer",
     boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
+  });
+
+  const downloadButton = document.createElement("button");
+  downloadButton.textContent = "Tallenna peli";
+  Object.assign(downloadButton.style, {
+    marginTop: "10px",
+    marginLeft: "10px",
+    padding: "8px 16px",
+    border: "none",
+    borderRadius: "6px",
+    backgroundColor: "#079300ff",
+    color: "white",
+    fontSize: "16px",
+    cursor: "pointer",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
+  });
+  modal.appendChild(downloadButton);
+
+  downloadButton.addEventListener("click", async () => {
+    const allScores = getSafeAllScores();
+    const averageScore = parseInt(localStorage.getItem("averageScore") || "0");
+    const gamesCompleted = parseInt(localStorage.getItem("gamesCompleted") || "0");
+    const totalTimeSpent = parseInt(localStorage.getItem("totalTimeSpent") || "0");
+    const totalAces = parseInt(localStorage.getItem("totalAces") || "0");
+    const totalMisses = parseInt(localStorage.getItem("totalMisses") || "0");
+    const jokerCount = parseInt(localStorage.getItem("jokerCount") || "0");
+    const scoreHash = hashScore(allScores);
+
+    const rawData = JSON.stringify({
+      gamesPlayed: gamesCompleted,
+      averageScore,
+      totalPoints: allScores.reduce((sum, s) => sum + s, 0),
+      totalTimeSpent,
+      totalAces,
+      totalMisses,
+      jokerCount,
+      rawScores: allScores,
+      scoreHash
+    });
+
+    const encrypted = await encryptData(rawData, SECRET_ENCRYPTION_KEY);
+
+    const saveFile = {
+      version: 1,
+      iv: encrypted.iv,
+      data: encrypted.encrypted
+    };
+
+    const blob = new Blob([JSON.stringify(saveFile, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "saveGameKorttipeli.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  const loadButton = document.createElement("button");
+  loadButton.textContent = "Lataa tallennettu peli";
+  Object.assign(loadButton.style, {
+    marginTop: "10px",
+    marginLeft: "10px",
+    padding: "8px 16px",
+    border: "none",
+    borderRadius: "6px",
+    backgroundColor: "#058f00ff",
+    color: "white",
+    fontSize: "16px",
+    cursor: "pointer",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
+  });
+  modal.appendChild(loadButton);
+
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".json";
+  fileInput.style.display = "none";
+  document.body.appendChild(fileInput);
+
+  loadButton.addEventListener("click", () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const save = JSON.parse(text);
+
+      if (!save.data || !save.iv || !Array.isArray(save.iv)) {
+        alert("Virheellinen tiedostomuoto.");
+        return;
+      }
+
+      const decrypted = await decryptData(save.data, save.iv, SECRET_ENCRYPTION_KEY);
+      const parsed = JSON.parse(decrypted);
+
+      const {
+        gamesPlayed,
+        averageScore,
+        totalPoints,
+        totalTimeSpent,
+        totalAces,
+        totalMisses,
+        jokerCount,
+        rawScores,
+        scoreHash
+      } = parsed;
+
+      const computedHash = hashScore(rawScores);
+      if (computedHash !== scoreHash) {
+        alert("⚠️ Tiedoston tarkistussumma ei täsmää. Tallennus saatettu muokata käsin.");
+        return;
+      }
+
+      localStorage.setItem("allScores", JSON.stringify(rawScores));
+      localStorage.setItem("allScoresHash", scoreHash);
+      localStorage.setItem("averageScore", averageScore.toString());
+      localStorage.setItem("gamesCompleted", gamesPlayed.toString());
+      localStorage.setItem("totalTimeSpent", totalTimeSpent.toString());
+      localStorage.setItem("totalAces", totalAces.toString());
+      localStorage.setItem("totalMisses", totalMisses.toString());
+      localStorage.setItem("jokerCount", jokerCount.toString());
+
+      alert("Tallennus ladattu onnistuneesti!");
+      window.location.reload();
+
+    } catch (err) {
+      alert("Tiedoston purku epäonnistui.");
+      console.error("Decryption/load error:", err);
+    }
   });
 
   closeButton.addEventListener("click", () => {
