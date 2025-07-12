@@ -111,6 +111,9 @@ menu.innerHTML = `
   toggleDebugMode.addEventListener("change", () => {
     asetukset.debugMode = toggleDebugMode.checked;
     tallennaAsetukset(asetukset);
+    if (toggleDebugMode.checked) {
+      alert("Debug mode on, lag may occur!");
+    }
   });
 
   let menuVisible = false;
@@ -135,5 +138,3 @@ menu.innerHTML = `
     toggleMenu(false);
   });
 });
-
-
