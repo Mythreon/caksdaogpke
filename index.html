@@ -31,6 +31,17 @@
 <script src="dev.ts"></script>
 <script src="mm.js"></script>
 <script>
+
+  function debugLog(...args) {
+  const asetukset = (typeof window.getAsetukset === "function")
+    ? window.getAsetukset()
+    : { debugMode: false };
+
+  if (asetukset.debugMode) {
+    console.log(...args);
+  }
+}
+
   const suits = ["♠", "♥", "♦", "♣"];
   const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   let deck = [];
@@ -89,8 +100,8 @@
 div.addEventListener("click", () => {
   if (!div.classList.contains("revealed")) {
     let isJoker = false;
-
-//    console.log(`Korttia klikattu: sijainti [${i}, ${j}]`);
+    
+    debugLog(`Korttia klikattu: sijainti [${i}, ${j}]`);
 
 if (onlyJokers) {
   isJoker = true;
@@ -153,7 +164,7 @@ for (let { condition, chance } of jokerChances) {
       div.textContent = cardText;
       if (card.suit === "♥" || card.suit === "♦") div.classList.add("red");
       gridCards[i][j] = cardText;
-//      console.log(`Paljastettiin kortti: ${cardText} sijainnissa [${i}, ${j}]`);
+      debugLog(`Paljastettiin kortti: ${cardText} sijainnissa [${i}, ${j}]`);
       evaluateAllVisibleTriplets();
     }
 
@@ -162,7 +173,7 @@ for (let { condition, chance } of jokerChances) {
         const acePoints = aceCount + 1;
         score += acePoints;
         showMessage(`Paljastit ässän! +${acePoints} pistettä`);
-//        console.log(` Ässä +${acePoints} pistettä`);
+        debugLog(` Ässä +${acePoints} pistettä`);
         updateScoreDisplay();
       }
 
@@ -320,7 +331,7 @@ function evaluateAllVisibleTriplets() {
       });
 
       if (!allRevealed) {
-//        console.log(`Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
+        debugLog(`Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
         continue;
       }
 
@@ -328,17 +339,15 @@ function evaluateAllVisibleTriplets() {
       newTripletsFound = true;
 
       const pts = evaluate(cards);
-
-//      console.log(`Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
-//      console.log(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
-
+      debugLog(`Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
+      debugLog(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
       if (pts > 0) {
         positivePoints += pts;
       } else if (pts < 0) {
         negativePoints += pts;
       }
     } else {
-//      console.log(`TRIPLETTI ${key} on jo arvioitu, ohitetaan.`);
+      debugLog(`TRIPLETTI ${key} on jo arvioitu, ohitetaan.`);
     }
   }
 
@@ -355,12 +364,12 @@ function evaluateAllVisibleTriplets() {
     }
 
     showMessage(msg);
-//    console.log(`Combo x${comboCount}! ${comboPoints}p (raw: ${positivePoints}) + huti ${negativePoints}p → yhteensä ${total}`);
+    debugLog(`Combo x${comboCount}! ${comboPoints}p (raw: ${positivePoints}) + huti ${negativePoints}p → yhteensä ${total}`);
     misses = 0;
 } else if (newTripletsFound && negativePoints < 0) {
   score += negativePoints;
   showMessage(`Huti! ${negativePoints}p`);
-//  console.log(`Huti → ${negativePoints} pistettä`);
+  debugLog(`Huti → ${negativePoints} pistettä`);
   misses += Math.abs(negativePoints); 
 }
 
