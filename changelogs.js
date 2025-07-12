@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.2.1</strong>: Paljon muutoksia: Statistiikkaruudulla, Main Menussa ja pari modaalia muutettuna. + Debug-moodin valmistelua.</li>
     <li><strong style="color:#90ee90">v1.2</strong>: Korjattu kaikki visuaaliset ongelmat, jotka löysin. Lisätty savegame-funktio, joka antaa sinun tehdä savegamen. Savegame on enkryptoitu, ja sitä ei voi todellakaan muokata helposti. </li>
     <li><strong style="color:#90ee90">v1.1.12</strong>: Pelissä on nyt parempi anticheat; kaikki edelliset pisteet tullaan nollaamaan. </li>
     <li><strong style="color:#90ee90">v1.1.11</strong>: Korjattu ongelma, jossa Main Menu latautui myöhemmin kuin peli. <br><br> Mini: 1.1.11.1: Korjattu erittäin pieni visuaalinen ongelma liittyen tähän.</li>
@@ -145,4 +146,3 @@ document.head.appendChild(style);
     }
   });
 });
-
