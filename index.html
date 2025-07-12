@@ -18,9 +18,7 @@
 <div id="scoreBox">Pisteet: 0</div>
 <div id="totalScoreBox" alt="debuggingValueScoreBoard">Kaikkien pelien yhteispisteet: 0</div> 
 <button id="resetBtn">Lopeta peli</button>
-
 <div id="messageBox"></div>
-
 <div id="highScores">
   <h3>Parhaat pisteet</h3>
   <ul id="scoreboardClassic"></ul>
@@ -32,8 +30,6 @@
 <script src="savegame.js"></script>
 <script src="dev.ts"></script>
 <script src="mm.js"></script>
-
-
 <script>
   const suits = ["♠", "♥", "♦", "♣"];
   const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -46,9 +42,6 @@
   let comboCount = 0;
   let evaluatedTriplets = [];
   let aceCount = 0;
-
-
-
 
   const grid = document.getElementById("cardGrid");
   const scoreBox = document.getElementById("scoreBox");
@@ -97,8 +90,7 @@ div.addEventListener("click", () => {
   if (!div.classList.contains("revealed")) {
     let isJoker = false;
 
-    console.log(`Korttia klikattu: sijainti [${i}, ${j}]`);
-
+//    console.log(`Korttia klikattu: sijainti [${i}, ${j}]`);
 
 if (onlyJokers) {
   isJoker = true;
@@ -123,12 +115,13 @@ const jokerChances = [
   { condition: score < -103 || score > 400, chance: 0.3 },
   { condition: score < -104 || score > 440, chance: 0.4 },
   { condition: score < -105 || score > 500, chance: 0.5 }, // Fun fact; 500 is impossible at the time of writing this.
-  { condition: score < -106 || score > 600, chance: 0.6 },
-  { condition: score < -107 || score > 700, chance: 0.7 },
+  { condition: score < -106 || score > 600, chance: 0.6 }, // Everything above 500 is just, y'know... If 500 becomes possible at some point.
+  { condition: score < -107 || score > 700, chance: 0.7 }, // Honestly, for now I've just placed these here for fun, makes the code longer.
   { condition: score < -108 || score > 800, chance: 0.8 },
   { condition: score < -109 || score > 900, chance: 0.9 },
-
-
+  { condition: score < -110 || score > 1000, chance: 0.95 },
+  { condition: score < -111 || score > 1100, chance: 0.99 },
+  { condition: score < -112 || score > 1200, chance: 1.0 }, // + If you somehow manage to get a minus score above 100, you deserve to not feel the pain for so long.
 ];
 
 for (let { condition, chance } of jokerChances) {
@@ -160,7 +153,7 @@ for (let { condition, chance } of jokerChances) {
       div.textContent = cardText;
       if (card.suit === "♥" || card.suit === "♦") div.classList.add("red");
       gridCards[i][j] = cardText;
-      console.log(`Paljastettiin kortti: ${cardText} sijainnissa [${i}, ${j}]`);
+//      console.log(`Paljastettiin kortti: ${cardText} sijainnissa [${i}, ${j}]`);
       evaluateAllVisibleTriplets();
     }
 
@@ -169,7 +162,7 @@ for (let { condition, chance } of jokerChances) {
         const acePoints = aceCount + 1;
         score += acePoints;
         showMessage(`Paljastit ässän! +${acePoints} pistettä`);
-        console.log(` Ässä +${acePoints} pistettä`);
+//        console.log(` Ässä +${acePoints} pistettä`);
         updateScoreDisplay();
       }
 
@@ -177,7 +170,6 @@ for (let { condition, chance } of jokerChances) {
     checkGameOver();
   }
 });
-
 
         grid.appendChild(div);
       }
@@ -217,8 +209,6 @@ function showMessage(text, priority = false) {
   }
 }
 
-
-
 function displayNextMessage() {
   if (messageQueue.length === 0) {
     messageShowing = false;
@@ -250,7 +240,6 @@ function parseCard(cardText) {
   const color = (suit === "♥" || suit === "♦") ? "red" : "black";
   return { suit, value, order: orderMap[value], color };
 }
-
 
 function evaluate(triplet) {
   const cards = triplet.map(parseCard);
@@ -331,7 +320,7 @@ function evaluateAllVisibleTriplets() {
       });
 
       if (!allRevealed) {
-        console.log(`Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
+//        console.log(`Triplet ${key} ei vielä arvioitu – ei kaikki paljastettu.`);
         continue;
       }
 
@@ -340,8 +329,8 @@ function evaluateAllVisibleTriplets() {
 
       const pts = evaluate(cards);
 
-      console.log(`Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
-      console.log(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
+//      console.log(`Arvioidaan triplet: [${coords.map(c => `[${c}]`).join(", ")}]`);
+//      console.log(`   → Kortit: ${cards.join(", ")} → Pisteet: ${pts}`);
 
       if (pts > 0) {
         positivePoints += pts;
@@ -349,7 +338,7 @@ function evaluateAllVisibleTriplets() {
         negativePoints += pts;
       }
     } else {
-      console.log(`TRIPLETTI ${key} on jo arvioitu, ohitetaan.`);
+//      console.log(`TRIPLETTI ${key} on jo arvioitu, ohitetaan.`);
     }
   }
 
@@ -366,19 +355,17 @@ function evaluateAllVisibleTriplets() {
     }
 
     showMessage(msg);
-    console.log(`Combo x${comboCount}! ${comboPoints}p (raw: ${positivePoints}) + huti ${negativePoints}p → yhteensä ${total}`);
+//    console.log(`Combo x${comboCount}! ${comboPoints}p (raw: ${positivePoints}) + huti ${negativePoints}p → yhteensä ${total}`);
     misses = 0;
 } else if (newTripletsFound && negativePoints < 0) {
   score += negativePoints;
   showMessage(`Huti! ${negativePoints}p`);
-  console.log(`Huti → ${negativePoints} pistettä`);
+//  console.log(`Huti → ${negativePoints} pistettä`);
   misses += Math.abs(negativePoints); 
 }
 
   updateScoreDisplay();
 }
-
-
 
 const totalScoreBox = document.getElementById("totalScoreBox");
 
@@ -495,16 +482,8 @@ resetBtn.addEventListener("touchstart", (e) => {
   initGame();
 });
 
-
-
   initGame();
   renderHighScores();
-
-  
-
-</script>
-<!-- -->
-<script>
 </script>
 </body>
 </html>
