@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   helpModal.innerHTML = `
     <h3 style="margin-top: 0;">Pelistä</h3>
+    <p>Peli on open-source peli! <a href=https://github.com/Mythreon/caksdaogpke>Pelin Github-sivu</a></p>
     <p>© 2025 <p>
     <p>Coded by Mythreon</p>
     <p>Music by Mythreon</p>
