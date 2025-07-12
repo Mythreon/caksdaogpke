@@ -3,6 +3,7 @@ const ASETUKSET_KEY = "asetukset";
 const oletusAsetukset = {
   showMessages: true,
   hardMode: false,
+  debugMode: false,
 };
 
 function haeAsetukset() {
@@ -60,6 +61,14 @@ menu.innerHTML = `
     </div>
     Hard Mode
   </label>
+  <label style="display: flex; align-items: center; margin-top: 12px; color: #f0f0f0;">
+  <div class="custom-toggle">
+    <input type="checkbox" id="toggleDebugMode">
+    <span class="slider"></span>
+   </div>
+   Debug Mode
+  </label>
+
 `;
 
   menu.style.position = "fixed";
@@ -96,6 +105,13 @@ menu.innerHTML = `
   tallennaAsetukset(asetukset);
 });
 
+  const toggleDebugMode = menu.querySelector("#toggleDebugMode");
+  toggleDebugMode.checked = asetukset.debugMode;
+
+  toggleDebugMode.addEventListener("change", () => {
+    asetukset.debugMode = toggleDebugMode.checked;
+    tallennaAsetukset(asetukset);
+  });
 
   let menuVisible = false;
 
@@ -119,3 +135,5 @@ menu.innerHTML = `
     toggleMenu(false);
   });
 });
+
+
