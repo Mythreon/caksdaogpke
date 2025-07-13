@@ -1,4 +1,5 @@
 <!-- Spagettikoodi brought to you by me -->
+<!-- Also believe me, you DO NOT want to see half of this code. It is pure spaghetti-->
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -28,11 +29,17 @@
 <script src="hs.js"></script>
 <script src="asetukset.js"></script>
 <script src="savegame.js"></script>
-<script src="dev.ts"></script>
+<script src="dev.js"></script>
 <script src="mm.js"></script>
 <script>
+function devModeOn() {
+  const asetukset = (typeof window.getAsetukset === "function")
+    ? window.getAsetukset()
+    : { devMode: false };
+  return asetukset.devMode; // Developer mode is in the settings only on my end, so this will always return false for you. This function is used in dev.js and mainly, is there.
+} // Also if you're contributing to this project, do not mind this function at all! It's 100% okay if you break it and it will not affect the game in any way. It's just there.
 
-  function debugLog(...args) {
+function debugLog(...args) {
   const asetukset = (typeof window.getAsetukset === "function")
     ? window.getAsetukset()
     : { debugMode: false };
@@ -119,20 +126,20 @@ if (asetukset.hardMode) {
 const jokerChances = [
   { condition: score < -1 || score > 1, chance: 0.0025 },
   { condition: score < -5 || score > 45, chance: 0.01 },
-  { condition: score < -50 || score > 100, chance: 0.05 },
-  { condition: score < -100 || score > 250, chance: 0.1 },
-  { condition: score < -101 || score > 300, chance: 0.15 }, // Honestly, nobody will probably get a score above 300 legimately but.... 
-  { condition: score < -102 || score > 350, chance: 0.2 },
-  { condition: score < -103 || score > 400, chance: 0.3 },
-  { condition: score < -104 || score > 440, chance: 0.4 },
-  { condition: score < -105 || score > 500, chance: 0.5 }, // Fun fact; 500 is impossible at the time of writing this.
-  { condition: score < -106 || score > 600, chance: 0.6 }, // Everything above 500 is just, y'know... If 500 becomes possible at some point.
-  { condition: score < -107 || score > 700, chance: 0.7 }, // Honestly, for now I've just placed these here for fun, makes the code longer.
-  { condition: score < -108 || score > 800, chance: 0.8 },
-  { condition: score < -109 || score > 900, chance: 0.9 },
-  { condition: score < -110 || score > 1000, chance: 0.95 },
-  { condition: score < -111 || score > 1100, chance: 0.99 },
-  { condition: score < -112 || score > 1200, chance: 1.0 }, // + If you somehow manage to get a minus score above 100, you deserve to not feel the pain for so long.
+  { condition: score < -6 || score > 100, chance: 0.05 },
+  { condition: score < -7 || score > 250, chance: 0.1 },
+  { condition: score < -8 || score > 300, chance: 0.15 }, // Honestly, nobody will probably get a score above 300 legimately but.... 
+  { condition: score < -9 || score > 350, chance: 0.2 },
+  { condition: score < -10 || score > 400, chance: 0.300034534543534534534534534534 }, // Just a random number without any proper meaning.
+  { condition: score < -11 || score > 440, chance: 0.4 },
+  { condition: score < -12 || score > 500, chance: 0.5 }, // Fun fact; 500 is impossible at the time of writing this.
+  { condition: score < -13 || score > 600, chance: 0.6 }, // Everything above 500 is just, y'know... If 500 becomes possible at some point.
+  { condition: score < -14 || score > 700, chance: 0.7 }, // Honestly, for now I've just placed these here for fun, makes the code longer.
+  { condition: score < -15 || score > 800, chance: 0.8 },
+  { condition: score < -20 || score > 900, chance: 0.9 },
+  { condition: score < -25 || score > 1000, chance: 0.95 },
+  { condition: score < -50 || score > 1100, chance: 0.99 },
+  { condition: score < -100 || score > 1200, chance: 1.0 }, // + If you somehow manage to get a minus score above 100, you deserve to not feel the pain for so long.
 ];
 
 for (let { condition, chance } of jokerChances) {
@@ -416,12 +423,6 @@ function hashScore(scoreArray, secret = "🧂salainenhommeliiniTortelliinilalala
 }
 
 function saveScore(score) {
-  const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
-  scores.push(score);
-  scores.sort((a, b) => b - a);
-  if (scores.length > 5) scores.length = 5;
-  localStorage.setItem("highScores", JSON.stringify(scores));
-
   const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
   allScores.push(score);
 
@@ -432,25 +433,29 @@ function saveScore(score) {
   updateTotalScoreDisplay();
 }
 
-
 updateTotalScoreDisplay();
 
 function renderHighScores() {
-  const scores = JSON.parse(localStorage.getItem("highScores") || "[]");
+  const allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
+
+  const topScores = [...allScores].sort((a, b) => b - a).slice(0, 5);
+
   scoreList.innerHTML = "";
 
-  onlyJokers = scores.some(s => s > 500); 
+  onlyJokers = topScores.some(s => s > 500); 
 
-  if (scores.length === 0) {
+  if (topScores.length === 0) {
     scoreList.innerHTML = "<li>Ei tuloksia vielä</li>";
   } else {
-    for (let s of scores) {
+    for (let s of topScores) {
       const li = document.createElement("li");
       li.textContent = s + " pistettä";
       scoreList.appendChild(li);
     }
   }
+
 }
+
 
 if (onlyJokers) {
   console.log("🔥 Jokerimoodi aktivoitu! 🔥");
@@ -482,6 +487,7 @@ function updateGameStats(currentScore, currentAces, currentMisses) {
   const average = allScores.length ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : 0;
   localStorage.setItem("averageScore", average);
 }
+
 
 resetBtn.addEventListener("click", () => {
   initGame();
