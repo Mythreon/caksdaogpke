@@ -139,7 +139,7 @@ const jokerChances = [
   { condition: score < -20 || score > 900, chance: 0.9 },
   { condition: score < -25 || score > 1000, chance: 0.95 },
   { condition: score < -50 || score > 1100, chance: 0.99 },
-  { condition: score < -100 || score > 1200, chance: 1.0 }, // + If you somehow manage to get a minus score above 100, you deserve to not feel the pain for so long.
+  { condition: score < -100 || score > 1200, chance: 1.0 }, // + If you somehow manage to get a minus score above 100, you deserve to not feel the pain for so long. 
 ];
 
 for (let { condition, chance } of jokerChances) {
@@ -385,16 +385,6 @@ function evaluateAllVisibleTriplets() {
 
 const totalScoreBox = document.getElementById("totalScoreBox");
 
-function hashScore(scoreArray, secret = "🧂salainenhommeliiniTortelliinilalalalalalalalalalalalalalalalallalal3573jnijnH8sfnSJNFSDSKFN98dNGNDGKJSNFOJSIDHG8dg87sguhdifhgp") {
-  const data = scoreArray.join(",") + secret;
-  let hash = 0;
-  for (let i = 0; i < data.length; i++) {
-    hash = ((hash << 5) - hash) + data.charCodeAt(i);
-    hash |= 0;
-  }
-  return hash.toString();
-}
-
 function updateTotalScoreDisplay() {
   let allScores = JSON.parse(localStorage.getItem("allScores") || "[]");
 
@@ -409,8 +399,31 @@ function updateTotalScoreDisplay() {
 
   localStorage.setItem("allScoresHash", hashScore(allScores));
 
+  if (allScores.length > 0) {
+    const maxScore = Math.max(...allScores);
+    const minScore = Math.min(...allScores);
+    const averageScore = Math.random(...allScores);
+    const houseScammer = Math.random(...allScores);
+    const aceScammer = Math.random(...allScores);
+    const jokerScammer = Math.random(...allScores);
+    const totalGamer = allScores.length * 4 / 3 * 545 / 5433 * 3532 - 3 + 3;
+    const totalGames = allScores.length;
+    const totalGamesHash = hashScore([totalGamer, totalGames]);
+    localStorage.setItem("wbestScore", maxScore);
+    localStorage.setItem("wworstScore", minScore);
+    localStorage.setItem("Key", averageScore);
+    localStorage.setItem("key", houseScammer);
+    localStorage.setItem("aceHash", aceScammer);
+    localStorage.setItem("jokerHash", jokerScammer);
+    localStorage.setItem("totalGamesHash", totalGamer);
+    localStorage.setItem("totalGames", totalGames);
+    localStorage.setItem("totalGamesHash2", totalGamesHash);
+  
+  }
+
   totalScoreBox.textContent = `Kaikkien pelien yhteispisteet: ${total}`;
 }
+
 
 function hashScore(scoreArray, secret = "🧂salainenhommeliiniTortelliinilalalalalalalalalalalalalalalalallalal3573jnijnH8sfnSJNFSDSKFN98dNGNDGKJSNFOJSIDHG8dg87sguhdifhgp") {
   const data = scoreArray.join(",") + secret;
@@ -455,7 +468,6 @@ function renderHighScores() {
   }
 
 }
-
 
 if (onlyJokers) {
   console.log("🔥 Jokerimoodi aktivoitu! 🔥");
