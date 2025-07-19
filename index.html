@@ -510,6 +510,20 @@ resetBtn.addEventListener("touchstart", (e) => {
   renderHighScores();
 </script>
 <script>
+  function käynnistäPeli() {
+  if (typeof window.getAsetukset !== "function") {
+    console.error("getAsetukset() puuttuu!");
+    return;
+  }
+
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener("load", käynnistäPeli);
+
+</script>
+<!-- Partikkelit-->
+<script>
 const canvas = document.getElementById("backgroundCanvas");
 const ctx = canvas.getContext("2d");
 
