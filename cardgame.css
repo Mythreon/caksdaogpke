@@ -26,10 +26,28 @@ body {
       text-align: center;
       padding: 30px;
       color: white;
-background: #0b630e;
-background: radial-gradient(circle,rgba(11, 99, 14, 1) 12%, rgba(0, 135, 25, 1) 54%, rgba(2, 125, 27, 1) 94%);
         }
         
+html, body {
+  margin: 0;
+  padding: 30px;
+  height: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+#backgroundCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  display: block;
+  background: transparent
+
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);  
@@ -226,3 +244,7 @@ button:hover {
   input:checked + .slider:before {
     transform: translateX(20px);
   }
+
+.a {
+  color:#007bff
+}  }
