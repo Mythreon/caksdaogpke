@@ -2,6 +2,7 @@ const ASETUKSET_KEY = "asetukset";
 
 const oletusAsetukset = {
   showMessages: true,
+  particlesEnabled: true, 
   hardMode: false,
   debugMode: false,
 };
@@ -55,6 +56,14 @@ menu.innerHTML = `
   </label>
 
   <label style="display: flex; align-items: center; margin-top: 12px; color: #f0f0f0;">
+  <div class="custom-toggle">
+    <input type="checkbox" id="toggleParticles">
+    <span class="slider"></span>
+  </div>
+  Näytä partikkelit
+</label>
+
+  <label style="display: flex; align-items: center; margin-top: 12px; color: #f0f0f0;">
     <div class="custom-toggle">
       <input type="checkbox" id="toggleHardMode">
       <span class="slider"></span>
@@ -97,6 +106,19 @@ menu.innerHTML = `
     tallennaAsetukset(asetukset);
   });
 
+  const toggleParticles = menu.querySelector("#toggleParticles");
+toggleParticles.checked = asetukset.particlesEnabled;
+
+toggleParticles.addEventListener("change", () => {
+  asetukset.particlesEnabled = toggleParticles.checked;
+  tallennaAsetukset(asetukset);
+  
+  if (asetukset.particlesEnabled) {
+    alustaPartikkelit(); 
+  }
+});
+
+
   const toggleHardMode = menu.querySelector("#toggleHardMode");
   toggleHardMode.checked = asetukset.hardMode;
 
@@ -138,3 +160,5 @@ menu.innerHTML = `
     toggleMenu(false);
   });
 });
+
+
