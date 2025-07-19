@@ -27,6 +27,7 @@ changelogBox.innerHTML = `
     <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.2.2</strong>: Uusi visuaalinen tyylisuuntaus; ei vielä täysin valmis, mutta sitä kohti mennään.</li>
     <li><strong style="color:#90ee90">v1.2.12</strong>: Korjattu Highscore-taulukko. Joitakin pieniä muutkoksia muuallakin.</li>
     <li><strong style="color:#90ee90">v1.2.1</strong>: Paljon muutoksia: Statistiikkaruudulla, Main Menussa ja pari modaalia muutettuna. + Debug-moodin valmistelua.</li>
     <li><strong style="color:#90ee90">v1.2</strong>: Korjattu kaikki visuaaliset ongelmat, jotka löysin. Lisätty savegame-funktio, joka antaa sinun tehdä savegamen. Savegame on enkryptoitu, ja sitä ei voi todellakaan muokata helposti. </li>
