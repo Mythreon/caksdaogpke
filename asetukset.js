@@ -43,8 +43,18 @@ document.addEventListener("DOMContentLoaded", () => {
   menu.id = "asetuksetMenu";
 menu.innerHTML = `
   <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
-    <h2 style="margin: 0; font-size: 18px; color: #fff;">Asetukset</h2>
-    <button id="closeSettings" style="background: none; border: none; font-size: 12px; color: #fff; cursor: pointer;">×</button>
+<h2 style="margin: 0; font-size: 20px; color: #aaffaa; text-shadow: 1px 1px 2px #000;">Asetukset</h2>
+<button id="closeSettings" style="
+  background-color: #388e3c;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+">x</button>
   </div>
 
   <label style="display: flex; align-items: center; margin-top: 12px; color: #f0f0f0;">
@@ -84,16 +94,17 @@ menu.innerHTML = `
   menu.style.top = "50%";
   menu.style.left = "50%";
   menu.style.transform = "translate(-50%, -50%)";
-  menu.style.background = "#2d4d2d";
-  menu.style.color = "#f0f0f0";
-  menu.style.padding = "16px 20px";
-  menu.style.borderRadius = "10px";
-  menu.style.boxShadow = "0 4px 10px rgba(0,0,0,0.4)";
+  menu.style.background = "#1a3d1a"; 
+  menu.style.color = "#e0ffe0"; 
+  menu.style.padding = "20px 24px";
+  menu.style.borderRadius = "12px";
+  menu.style.boxShadow = "0 6px 18px rgba(0,0,0,0.5)";
   menu.style.zIndex = "100002";
-  menu.style.maxWidth = "300px";
+  menu.style.maxWidth = "360px";
   menu.style.fontFamily = "sans-serif";
   menu.style.fontSize = "14px";
   menu.style.display = "none";
+
 
   document.body.appendChild(overlay);
   document.body.appendChild(menu);
@@ -160,5 +171,3 @@ toggleParticles.addEventListener("change", () => {
     toggleMenu(false);
   });
 });
-
-
