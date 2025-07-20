@@ -23,8 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
   changelogBox.id = "changelogBox";
 changelogBox.innerHTML = `
   <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
-    <h2 style="margin: 0; font-size: 18px; color: #fff;">Muutokset</h2>
-    <button id="closeChangelog" style="background: none; border: none; font-size: 24px; color: #fff; cursor: pointer;">×</button>
+<h2 style="margin: 0; font-size: 20px; color: #aaffaa; text-shadow: 1px 1px 2px #000;">Muutokset</h2>
+<button id="closeChangelog" style="
+  background-color: #388e3c;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+">x</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
     <li><strong style="color:#90ee90">v1.2.21</strong>: Lisätty asetus partikkeleiden poistamiseen.</li>
@@ -72,53 +82,92 @@ changelogList.style.scrollbarColor = "#4caf50rgb(26, 26, 26, 0.0)";
 
 const style = document.createElement("style");
 style.textContent = `
+  #changelogBox {
+    background: #1a3d1a;
+    color: #e0ffe0;
+    max-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    z-index: 10001;
+    font-family: 'sans-serif';
+    font-size: 14px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #changelogBox h2 {
+    font-size: 20px;
+    color: #aaffaa;
+    text-shadow: 1px 1px 2px #000;
+  }
+
+  #changelogBox button#closeChangelog {
+    background-color: #388e3c;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  #changelogBox button#closeChangelog:hover {
+    background-color: #43a047;
+  }
+
+  #changelogBox ul {
+    scrollbar-width: thin;
+    scrollbar-color: #4caf50 transparent;
+    list-style: disc;
+    padding-left: 18px;
+    color: #e0ffe0;
+    margin-top: 12px;
+  }
+
   #changelogBox ul::-webkit-scrollbar {
     width: 8px;
-    background: transparent;
   }
 
   #changelogBox ul::-webkit-scrollbar-track {
-    background: transparent !important;
-    border: none !important;
-  }
-
-  #changelogBox ul::-webkit-scrollbar-track-piece {
-    background: transparent !important;
+    background: transparent;
   }
 
   #changelogBox ul::-webkit-scrollbar-thumb {
     background-color: #4caf50;
     border-radius: 4px;
-    border: none;
   }
 
   #changelogBox ul::-webkit-scrollbar-thumb:hover {
     background-color: #66bb6a;
   }
 
-  #changelogBox ul {
-    scrollbar-width: thin;
-    scrollbar-color: #4caf50 transparent;
+  #overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
   }
 `;
-document.head.appendChild(style);
-
-document.head.appendChild(style);
-
 document.head.appendChild(style);
 
   changelogBox.style.position = "fixed";
   changelogBox.style.top = "50%";
   changelogBox.style.left = "50%";
   changelogBox.style.transform = "translate(-50%, -50%)";
-  changelogBox.style.background = "#2d4d2d"; 
-  changelogBox.style.color = "#f0f0f0";       
-  changelogBox.style.maxWidth = "400px";
+  changelogBox.style.background = "#1a3d1a"; 
+  changelogBox.style.color = "#e0ffe0"; 
+  changelogBox.style.maxWidth = "480px";
   changelogBox.style.maxHeight = "80vh";
   changelogBox.style.overflowY = "auto";
-  changelogBox.style.padding = "16px 20px";
-  changelogBox.style.borderRadius = "10px";
-  changelogBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.4)";
+  changelogBox.style.padding = "20px 24px";
+  changelogBox.style.borderRadius = "12px";
+  changelogBox.style.boxShadow = "0 6px 18px rgba(0, 0, 0, 0.5)";
   changelogBox.style.zIndex = "10001";
   changelogBox.style.fontFamily = "sans-serif";
   changelogBox.style.fontSize = "14px";
