@@ -144,24 +144,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const modal = document.createElement("div");
   modal.id = "infoModal";
-  Object.assign(modal.style, {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: "#2d4d2d",
-    color: "#f0f0f0",
-    padding: "20px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.4)",
-    zIndex: "200000",
-    display: "none",
-    minWidth: "280px",
-    maxWidth: "80vw",
-    textAlign: "center",
-    fontFamily: "sans-serif"
-  });
-
+Object.assign(modal.style, {
+  position: "fixed",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  background: "#1a3d1a", 
+  color: "#e0ffe0",       
+  padding: "24px 28px",
+  borderRadius: "14px",
+  boxShadow: "0 6px 18px rgba(0, 0, 0, 0.6)",
+  zIndex: "200000",
+  display: "none",
+  minWidth: "300px",
+  maxWidth: "90vw",
+  textAlign: "center",
+  fontFamily: "sans-serif",
+  fontSize: "15px"
+});
   const statsText = document.createElement("div");
   statsText.id = "infoText";
 
@@ -187,7 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
     padding: "8px 16px",
     border: "none",
     borderRadius: "6px",
-    backgroundColor: "#079300ff",
+    backgroundColor: "#2e7d32", 
+    hover: "#1e6823",
     color: "white",
     fontSize: "16px",
     cursor: "pointer",
@@ -242,7 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
     padding: "8px 16px",
     border: "none",
     borderRadius: "6px",
-    backgroundColor: "#058f00ff",
+    backgroundColor: "#2e7d32", 
+    hover: "#1e6823",
     color: "white",
     fontSize: "16px",
     cursor: "pointer",
@@ -351,7 +353,7 @@ infoBtn.addEventListener("click", () => {
   }
 
   statsText.innerHTML = `
-    <h3 style="margin-top: 0;">Pelitilastot</h3>
+  <h3 style="margin-top: 0; color: #aaffaa; font-size: 20px; text-shadow: 1px 1px 2px #000;">Pelitilastot</h3>
     <p> Pelatut pelit: <strong>${totalGames}</strong></p>
     <p> Keskimääräinen pistemäärä: <strong>${averageScore}</strong></p>
     <p> Kokonaistulokset: <strong>${totalPoints} pistettä</strong></p>
