@@ -37,6 +37,7 @@ changelogBox.innerHTML = `
 ">x</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.2.3</strong>: Uusi visuaalinen tyylisuuntaus valmis. </li>
     <li><strong style="color:#90ee90">v1.2.21</strong>: Lisätty asetus partikkeleiden poistamiseen.</li>
     <li><strong style="color:#90ee90">v1.2.2</strong>: Uusi visuaalinen tyylisuuntaus; ei vielä täysin valmis, mutta sitä kohti mennään.</li>
     <li><strong style="color:#90ee90">v1.2.12</strong>: Korjattu Highscore-taulukko. Joitakin pieniä muutkoksia muuallakin.</li>
