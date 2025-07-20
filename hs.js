@@ -1,5 +1,5 @@
 // This by far was the hardest out of anything to create
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const highScores = document.getElementById("highScores");
   if (!highScores) return;
 
@@ -63,7 +63,7 @@
     right: "10px",
     width: "40px",
     height: "40px",
-    backgroundColor: "rgba(0, 92, 11, 0.8)",
+    backgroundColor: "rgba(0, 161, 3, 0.9)",
     color: "#333",
     fontWeight: "bold",
     fontSize: "20px",
