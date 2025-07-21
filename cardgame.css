@@ -6,7 +6,7 @@ header {
     padding: 8px 12px;
     border-radius: 6px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    font-family: sans-serif;
+    font-family: 'MythFonts1', sans-serif;
     font-weight: bold;
     font-size: 16px;
     z-index: 10000;
@@ -23,12 +23,18 @@ header a:hover {
     color: #007bff;
   }
 body {
-      font-family: sans-serif;
+      font-family: 'MythFonts1', sans-serif;
       text-align: center;
       padding: 30px;
       color: white;
-        }
-        
+}
+
+@font-face {
+  font-family: 'MythFonts1';
+  src: url('https://mythreon.github.io/repo/caksdaogpke/MythFonts1.ttf') format('truetype');
+}
+
+
 html, body {
   margin: 0;
   padding: 30px;
