@@ -475,11 +475,13 @@ if (onlyJokers) {
 function checkGameOver() {
   const allRevealed = gridCards.flat().every(card => card !== null);
   if (allRevealed) {
-  showMessage("Peli päättyi! Pisteesi: " + score, true);
+    showMessage("Peli päättyi! Pisteesi: " + score, true);
     saveScore(score);
-      updateGameStats(score, aceCount, misses); 
+    updateGameStats(score, aceCount, misses);
+    updateAchievements(score, misses);  
   }
 }
+
 
 function updateGameStats(currentScore, currentAces, currentMisses) {
   const completed = parseInt(localStorage.getItem("gamesCompleted") || "0") + 1;
@@ -496,6 +498,38 @@ function updateGameStats(currentScore, currentAces, currentMisses) {
   localStorage.setItem("averageScore", average);
 }
 
+function updateAchievements(score, lastGameMisses) {
+  const achievements = JSON.parse(localStorage.getItem("achievements") || "{}");
+  const totalAces      = parseInt(localStorage.getItem("totalAces") || "0", 10);
+  const totalMisses    = parseInt(localStorage.getItem("totalMisses") || "0", 10);
+  const jokerCount     = parseInt(localStorage.getItem("jokerCount") || "0", 10);
+  const gamesCompleted = parseInt(localStorage.getItem("gamesCompleted") || "0", 10);
+  const allScores      = JSON.parse(localStorage.getItem("allScores") || "[]");
+  const totalPoints    = allScores.reduce((sum, s) => sum + s, 0);
+
+  if (gamesCompleted >= 1)    achievements.firstGame     = true;
+  if (gamesCompleted >= 5)    achievements.fiveGames     = true;
+  if (gamesCompleted >= 20)   achievements.twentyGames   = true;
+  if (gamesCompleted >= 100)  achievements.hundredGames  = true;
+  if (gamesCompleted >= 1000) achievements.thousandGames = true;
+
+  if (totalPoints >= 10000)   achievements.total10kPoints = true;
+
+  if (totalAces >= 1)         achievements.firstAce      = true;
+  if (jokerCount >= 1)        achievements.firstJoker    = true;
+  if (jokerCount >= 3)        achievements.jokerSurvivor = true;
+
+  if (score >= 100)           achievements.highScore100  = true;
+  if (score >= 300)           achievements.highScore300  = true;
+
+  if (lastGameMisses === 0)   achievements.noMissesGame  = true;
+  if (score === 0)            achievements.zeroScore      = true;
+  if (score >= 200 && lastGameMisses === 0) achievements.perfect300 = true;
+  if (totalAces >= 3)         achievements.aceMaster     = true;
+  if (jokerCount >= 5)        achievements.jokerMagnet   = true;
+
+  localStorage.setItem("achievements", JSON.stringify(achievements));
+}
 
 resetBtn.addEventListener("click", () => {
   initGame();
