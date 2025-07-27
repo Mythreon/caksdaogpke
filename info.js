@@ -125,11 +125,11 @@ function renderAchievementsList() {
       ${renderTrophy("Ensimmäinen ässä", achievements.firstAce)}
       ${renderTrophy("Ensimmäinen jokeri", achievements.firstJoker)}
       ${renderTrophy("Peli ilman huteja", achievements.noMissesGame)}
-      ${renderTrophy("Vähintään 100 pistettä", achievements.highScore100)}
-      ${renderTrophy("Vähintään 300 pistettä", achievements.highScore300)}
+      ${renderTrophy("100 pisteen peli", achievements.highScore100)}
+      ${renderTrophy("300 pisteen peli", achievements.highScore300)}
       ${renderTrophy("Täydellinen peli: 300+ pistettä ilman huteja", achievements.perfect300)}
-      ${renderTrophy("Ässävirtuoosi – 3 ässää pelissä", achievements.aceMaster)}
-      ${renderTrophy("Jokerimagnetti – 5 jokeria elämässä", achievements.jokerMagnet)}
+      ${renderTrophy("Ässävirtuoosi - 3 ässää pelissä", achievements.aceMaster)}
+      ${renderTrophy("Jokerimagnetti - 5 jokeria elämässä", achievements.jokerMagnet)}
     </ul>
 
 <!--    <h4 style="color:#aaffaa; margin-top:16px;">🤪 Salaiset / Erikoiset</h4>
