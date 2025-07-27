@@ -98,6 +98,47 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.round(n);
   }
 
+function renderAchievementsList() {
+  const achievements = JSON.parse(localStorage.getItem("achievements") || "{}");
+
+  const renderTrophy = (label, unlocked) =>
+    `<li style="color:${unlocked ? '#ffd700' : '#666'}">
+      ${unlocked ? "🏆" : "🔒"} ${label}
+    </li>`;
+
+  return `
+    <h3 style="color:#ffffcc; font-size:18px;">🎖️ Saavutukset</h3>
+
+    <h4 style="color:#aaffaa; margin-bottom:4px;">🟢 Perussaavutukset</h4>
+    <ul style="list-style:none; padding:0; font-size:15px; text-align:left;">
+      ${renderTrophy("Ensimmäinen peli", achievements.firstGame)}
+      ${renderTrophy("Pelannut 5 peliä", achievements.fiveGames)}
+      ${renderTrophy("Pelannut 20 peliä", achievements.twentyGames)}
+      ${renderTrophy("Pelannut 100 peliä", achievements.hundredGames)}
+      ${renderTrophy("Pelannut 1000 peliä", achievements.thousandGames)}
+      ${renderTrophy("Yhteensä 10 000 pistettä", achievements.total10kPoints)}
+    </ul>
+
+    <h4 style="color:#aaffaa; margin-top:16px;">🔶 Taitosaavutukset</h4>
+    <ul style="list-style:none; padding:0; font-size:15px; text-align:left;">
+      ${renderTrophy("Ensimmäinen ässä", achievements.firstAce)}
+      ${renderTrophy("Ensimmäinen jokeri", achievements.firstJoker)}
+      ${renderTrophy("Peli ilman huteja", achievements.noMissesGame)}
+      ${renderTrophy("Vähintään 100 pistettä", achievements.highScore100)}
+      ${renderTrophy("Vähintään 300 pistettä", achievements.highScore300)}
+      ${renderTrophy("Täydellinen peli: 300+ pistettä ilman huteja", achievements.perfect300)}
+      ${renderTrophy("Ässävirtuoosi – 3 ässää pelissä", achievements.aceMaster)}
+      ${renderTrophy("Jokerimagnetti – 5 jokeria elämässä", achievements.jokerMagnet)}
+    </ul>
+
+<!--    <h4 style="color:#aaffaa; margin-top:16px;">🤪 Salaiset / Erikoiset</h4>
+    <ul style="list-style:none; padding:0; font-size:15px; text-align:left;">
+      ${renderTrophy("0 pistettä – Miten tämä onnistui?", achievements.zeroScore)}
+    </ul> -->
+  `;
+}
+
+
   const infoBtn = document.createElement("a");
   infoBtn.id = "infoButton";
   infoBtn.textContent = "(i)";
@@ -179,6 +220,56 @@ Object.assign(modal.style, {
     boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
   });
 
+  const trophiesButton = document.createElement("button");
+trophiesButton.textContent = "Näytä saavutukset";
+Object.assign(trophiesButton.style, {
+  marginTop: "10px",
+  marginLeft: "10px",
+  padding: "8px 16px",
+  border: "none",
+  borderRadius: "6px",
+  backgroundColor: "#4caf50",
+  color: "white",
+  fontSize: "16px",
+  cursor: "pointer",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
+});
+modal.appendChild(trophiesButton);
+
+trophiesButton.addEventListener("click", () => {
+  statsText.innerHTML = renderAchievementsList();
+});
+
+const backToStatsButton = document.createElement("button");
+backToStatsButton.textContent = "Takaisin tilastoihin";
+Object.assign(backToStatsButton.style, {
+  marginTop: "10px",
+  marginLeft: "10px",
+  padding: "8px 16px",
+  border: "none",
+  borderRadius: "6px",
+  backgroundColor: "#6d4c41",
+  color: "white",
+  fontSize: "16px",
+  cursor: "pointer",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
+});
+modal.appendChild(backToStatsButton);
+
+backToStatsButton.style.display = "none";
+
+trophiesButton.addEventListener("click", () => {
+  statsText.innerHTML = renderAchievementsList();
+  backToStatsButton.style.display = "inline-block";
+});
+
+backToStatsButton.addEventListener("click", () => {
+  infoBtn.click(); 
+  backToStatsButton.style.display = "none";
+});
+
+
+
   const downloadButton = document.createElement("button");
   downloadButton.textContent = "Tallenna peli";
   Object.assign(downloadButton.style, {
@@ -196,44 +287,46 @@ Object.assign(modal.style, {
   });
   modal.appendChild(downloadButton);
 
-  downloadButton.addEventListener("click", async () => {
-    const allScores = getSafeAllScores();
-    const averageScore = parseInt(localStorage.getItem("averageScore") || "0");
-    const gamesCompleted = parseInt(localStorage.getItem("gamesCompleted") || "0");
-    const totalTimeSpent = parseInt(localStorage.getItem("totalTimeSpent") || "0");
-    const totalAces = parseInt(localStorage.getItem("totalAces") || "0");
-    const totalMisses = parseInt(localStorage.getItem("totalMisses") || "0");
-    const jokerCount = parseInt(localStorage.getItem("jokerCount") || "0");
-    const scoreHash = hashScore(allScores);
+downloadButton.addEventListener("click", async () => {
+  const allScores      = getSafeAllScores();
+  const averageScore   = parseInt(localStorage.getItem("averageScore") || "0", 10);
+  const gamesCompleted = parseInt(localStorage.getItem("gamesCompleted") || "0", 10);
+  const totalTimeSpent = parseInt(localStorage.getItem("totalTimeSpent") || "0", 10);
+  const totalAces      = parseInt(localStorage.getItem("totalAces") || "0", 10);
+  const totalMisses    = parseInt(localStorage.getItem("totalMisses") || "0", 10);
+  const jokerCount     = parseInt(localStorage.getItem("jokerCount") || "0", 10);
+  const achievements   = JSON.parse(localStorage.getItem("achievements") || "{}");
+  const scoreHash      = hashScore(allScores);
 
-    const rawData = JSON.stringify({
-      gamesPlayed: gamesCompleted,
-      averageScore,
-      totalPoints: allScores.reduce((sum, s) => sum + s, 0),
-      totalTimeSpent,
-      totalAces,
-      totalMisses,
-      jokerCount,
-      rawScores: allScores,
-      scoreHash
-    });
-
-    const encrypted = await encryptData(rawData, SECRET_ENCRYPTION_KEY);
-
-    const saveFile = {
-      version: 1,
-      iv: encrypted.iv,
-      data: encrypted.encrypted
-    };
-
-    const blob = new Blob([JSON.stringify(saveFile, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "saveGameKorttipeli.json";
-    a.click();
-    URL.revokeObjectURL(url);
+  const rawData = JSON.stringify({
+    gamesPlayed: gamesCompleted,
+    averageScore,
+    totalPoints: allScores.reduce((sum, s) => sum + s, 0),
+    totalTimeSpent,
+    totalAces,
+    totalMisses,
+    jokerCount,
+    rawScores: allScores,
+    achievements,
+    scoreHash
   });
+
+  const encrypted = await encryptData(rawData, SECRET_ENCRYPTION_KEY);
+  const saveFile = {
+    version: 1,
+    iv: encrypted.iv,
+    data: encrypted.encrypted
+  };
+
+  const blob = new Blob([JSON.stringify(saveFile, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "saveGameKorttipeli.json";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
 
   const loadButton = document.createElement("button");
   loadButton.textContent = "Lataa tallennettu peli";
@@ -262,57 +355,61 @@ Object.assign(modal.style, {
     fileInput.click();
   });
 
-  fileInput.addEventListener("change", async () => {
-    const file = fileInput.files[0];
-    if (!file) return;
+fileInput.addEventListener("change", async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
 
-    try {
-      const text = await file.text();
-      const save = JSON.parse(text);
+  try {
+    const text = await file.text();
+    const save = JSON.parse(text);
 
-      if (!save.data || !save.iv || !Array.isArray(save.iv)) {
-        alert("Virheellinen tiedostomuoto.");
-        return;
-      }
-
-      const decrypted = await decryptData(save.data, save.iv, SECRET_ENCRYPTION_KEY);
-      const parsed = JSON.parse(decrypted);
-
-      const {
-        gamesPlayed,
-        averageScore,
-        totalPoints,
-        totalTimeSpent,
-        totalAces,
-        totalMisses,
-        jokerCount,
-        rawScores,
-        scoreHash
-      } = parsed;
-
-      const computedHash = hashScore(rawScores);
-      if (computedHash !== scoreHash) {
-        alert("⚠️ Tiedoston tarkistussumma ei täsmää. Tallennus saatettu muokata käsin.");
-        return;
-      }
-
-      localStorage.setItem("allScores", JSON.stringify(rawScores));
-      localStorage.setItem("allScoresHash", scoreHash);
-      localStorage.setItem("averageScore", averageScore.toString());
-      localStorage.setItem("gamesCompleted", gamesPlayed.toString());
-      localStorage.setItem("totalTimeSpent", totalTimeSpent.toString());
-      localStorage.setItem("totalAces", totalAces.toString());
-      localStorage.setItem("totalMisses", totalMisses.toString());
-      localStorage.setItem("jokerCount", jokerCount.toString());
-
-      alert("Tallennus ladattu onnistuneesti!");
-      window.location.reload();
-
-    } catch (err) {
-      alert("Tiedoston purku epäonnistui.");
-      console.error("Decryption/load error:", err);
+    if (!save.data || !save.iv || !Array.isArray(save.iv)) {
+      alert("Virheellinen tiedostomuoto.");
+      return;
     }
-  });
+
+    const decrypted = await decryptData(save.data, save.iv, SECRET_ENCRYPTION_KEY);
+    const parsed = JSON.parse(decrypted);
+
+    const {
+      gamesPlayed,
+      averageScore,
+      totalPoints,
+      totalTimeSpent,
+      totalAces,
+      totalMisses,
+      jokerCount,
+      rawScores,
+      achievements,
+      scoreHash
+    } = parsed;
+
+    const computedHash = hashScore(rawScores);
+    if (computedHash !== scoreHash) {
+      alert("⚠️ Tiedoston tarkistussumma ei täsmää. Tallennus saatettu muokata käsin.");
+      return;
+    }
+
+    localStorage.setItem("allScores", JSON.stringify(rawScores));
+    localStorage.setItem("allScoresHash", scoreHash);
+    localStorage.setItem("averageScore", averageScore.toString());
+    localStorage.setItem("gamesCompleted", gamesPlayed.toString());
+    localStorage.setItem("totalTimeSpent", totalTimeSpent.toString());
+    localStorage.setItem("totalAces", totalAces.toString());
+    localStorage.setItem("totalMisses", totalMisses.toString());
+    localStorage.setItem("jokerCount", jokerCount.toString());
+    if (achievements) {
+      localStorage.setItem("achievements", JSON.stringify(achievements));
+    }
+
+    alert("Tallennus ladattu onnistuneesti!");
+    window.location.reload();
+
+  } catch (err) {
+    alert("Tiedoston purku epäonnistui.");
+    console.error("Decryption/load error:", err);
+  }
+});
 
   closeButton.addEventListener("click", () => {
     modal.style.display = "none";
