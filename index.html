@@ -519,11 +519,11 @@ function updateAchievements(score, lastGameMisses) {
   if (jokerCount >= 1)        achievements.firstJoker    = true;
   if (jokerCount >= 3)        achievements.jokerSurvivor = true;
 
-  if (score >= 100)           achievements.highScore100  = true;
-  if (score >= 300)           achievements.highScore300  = true;
+  if (allScores.some(s => s === 0))   achievements.zeroScore     = true;
+  if (allScores.some(s => s >= 100)) achievements.highScore100  = true;
+  if (allScores.some(s => s >= 300)) achievements.highScore300  = true;
 
   if (lastGameMisses === 0)   achievements.noMissesGame  = true;
-  if (score === 0)            achievements.zeroScore      = true;
   if (score >= 200 && lastGameMisses === 0) achievements.perfect300 = true;
   if (totalAces >= 3)         achievements.aceMaster     = true;
   if (jokerCount >= 5)        achievements.jokerMagnet   = true;
