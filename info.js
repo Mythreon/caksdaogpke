@@ -117,6 +117,7 @@ function renderAchievementsList() {
       ${renderTrophy("Pelannut 100 peliä", achievements.hundredGames)}
       ${renderTrophy("Pelannut 1000 peliä", achievements.thousandGames)}
       ${renderTrophy("Yhteensä 10 000 pistettä", achievements.total10kPoints)}
+      ${renderTrophy("0 pisteen peli?!?!", achievements.zeroScore)}
     </ul>
 
     <h4 style="color:#aaffaa; margin-top:16px;">🔶 Taitosaavutukset</h4>
