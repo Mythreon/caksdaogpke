@@ -34,6 +34,12 @@ body {
   src: url('https://mythreon.github.io/caksdaogpke/MythFonts1.ttf') format('truetype');
 }
 
+/* MythFonts1 
+{ = ä
+| = Ä
+} = ö
+~ = Ö
+*/
 
 html, body {
   margin: 0;
@@ -264,4 +270,26 @@ input:checked + .slider:before {
 
 .a {
   color:#007bff
+}
+
+#infoModal {
+  scrollbar-width: thin;
+  scrollbar-color: #4caf50 transparent;
+}
+
+#infoModal::-webkit-scrollbar {
+  width: 8px;
+}
+
+#infoModal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#infoModal::-webkit-scrollbar-thumb {
+  background-color: #4caf50;
+  border-radius: 4px;
+}
+
+#infoModal::-webkit-scrollbar-thumb:hover {
+  background-color: #66bb6a;
 }
