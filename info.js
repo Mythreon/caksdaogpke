@@ -130,6 +130,7 @@ function renderAchievementsList() {
       ${renderTrophy("Täydellinen peli: 300+ pistettä ilman huteja", achievements.perfect300)}
       ${renderTrophy("Ässävirtuoosi - 3 ässää pelissä", achievements.aceMaster)}
       ${renderTrophy("Jokerimagnetti - 5 jokeria elämässä", achievements.jokerMagnet)}
+      ${renderTrophy("10 000 peliä", achievements.tenThousandGames)}
     </ul>
 
 <!--    <h4 style="color:#aaffaa; margin-top:16px;">🤪 Salaiset / Erikoiset</h4>
@@ -222,7 +223,7 @@ Object.assign(modal.style, {
   });
 
   const trophiesButton = document.createElement("button");
-trophiesButton.textContent = "Näytä saavutukset";
+trophiesButton.textContent = "🏆";
 Object.assign(trophiesButton.style, {
   marginTop: "10px",
   marginLeft: "10px",
@@ -239,7 +240,12 @@ modal.appendChild(trophiesButton);
 
 trophiesButton.addEventListener("click", () => {
   statsText.innerHTML = renderAchievementsList();
+  backToStatsButton.style.display = "inline-block";
+
+  downloadButton.style.display = "none";
+  loadButton.style.display = "none";
 });
+
 
 const backToStatsButton = document.createElement("button");
 backToStatsButton.textContent = "Takaisin tilastoihin";
@@ -265,9 +271,13 @@ trophiesButton.addEventListener("click", () => {
 });
 
 backToStatsButton.addEventListener("click", () => {
-  infoBtn.click(); 
+  infoBtn.click();
   backToStatsButton.style.display = "none";
+
+  downloadButton.style.display = "inline-block";
+  loadButton.style.display = "inline-block";
 });
+
 
 
 
@@ -412,15 +422,25 @@ fileInput.addEventListener("change", async () => {
   }
 });
 
-  closeButton.addEventListener("click", () => {
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
+closeButton.addEventListener("click", () => {
+  modal.style.display = "none";
+  overlay.style.display = "none";
 
-  overlay.addEventListener("click", () => {
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
+  backToStatsButton.style.display = "none";
+  downloadButton.style.display = "inline-block";
+  loadButton.style.display = "inline-block";
+});
+
+
+overlay.addEventListener("click", () => {
+  modal.style.display = "none";
+  overlay.style.display = "none";
+
+  backToStatsButton.style.display = "none";
+  downloadButton.style.display = "inline-block";
+  loadButton.style.display = "inline-block";
+});
+
 
   modal.appendChild(statsText);
   modal.appendChild(closeButton);
@@ -451,7 +471,7 @@ infoBtn.addEventListener("click", () => {
   }
 
   statsText.innerHTML = `
-  <h3 style="margin-top: 0; color: #aaffaa; font-size: 20px; text-shadow: 1px 1px 2px #000;">Pelitilastot</h3>
+    <h3 style="margin-top: 0; color: #aaffaa; font-size: 20px; text-shadow: 1px 1px 2px #000;">Pelitilastot</h3>
     <p> Pelatut pelit: <strong>${totalGames}</strong></p>
     <p> Keskimääräinen pistemäärä: <strong>${averageScore}</strong></p>
     <p> Kokonaistulokset: <strong>${totalPoints} pistettä</strong></p>
@@ -460,6 +480,8 @@ infoBtn.addEventListener("click", () => {
     <p> Huteja yhteensä: <strong>${totalMisses}</strong></p>
     <p> Jokereita nähty: <strong>${jokerCount}</strong></p>
   `;
+
+  backToStatsButton.style.display = "none";
 
   modal.style.display = "block";
   overlay.style.display = "block";
