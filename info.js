@@ -101,10 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderAchievementsList() {
   const achievements = JSON.parse(localStorage.getItem("achievements") || "{}");
 
-  const renderTrophy = (label, unlocked) =>
-    `<li style="color:${unlocked ? '#ffd700' : '#666'}">
-      ${unlocked ? "🏆" : "🔒"} ${label}
-    </li>`;
+function renderTrophy(label, unlocked, hiddenLabel = "???") {
+  return `
+    <li style="color:${unlocked ? '#ffd700' : '#666'}">
+      ${unlocked ? "🏆" : "🔒"} ${unlocked ? label : hiddenLabel}
+    </li>
+  `;
+}
+
 
   return `
     <h3 style="color:#ffffcc; font-size:18px;">🎖️ Saavutukset</h3>
@@ -126,17 +130,20 @@ function renderAchievementsList() {
       ${renderTrophy("Ensimmäinen jokeri", achievements.firstJoker)}
       ${renderTrophy("Peli ilman huteja", achievements.noMissesGame)}
       ${renderTrophy("100 pisteen peli", achievements.highScore100)}
-      ${renderTrophy("300 pisteen peli", achievements.highScore300)}
-      ${renderTrophy("Täydellinen peli: 300+ pistettä ilman huteja", achievements.perfect300)}
+      ${renderTrophy("Täydellinen peli", achievements.highScore300)}
+      ${renderTrophy("Täydellinen peli ilman huteja", achievements.perfect300)}
       ${renderTrophy("Ässävirtuoosi - 3 ässää pelissä", achievements.aceMaster)}
       ${renderTrophy("Jokerimagnetti - 5 jokeria elämässä", achievements.jokerMagnet)}
       ${renderTrophy("10 000 peliä", achievements.tenThousandGames)}
     </ul>
 
-<!--    <h4 style="color:#aaffaa; margin-top:16px;">🤪 Salaiset / Erikoiset</h4>
-    <ul style="list-style:none; padding:0; font-size:15px; text-align:left;">
-      ${renderTrophy("0 pistettä – Miten tämä onnistui?", achievements.zeroScore)}
-    </ul> -->
+<h4 style="color:#aaffaa; margin-top:16px;">Salaiset</h4>
+<ul style="list-style:none; padding:0; font-size:15px; text-align:left;">
+  ${renderTrophy("100 000 pistettä – Miten tämä onnistui?", achievements.total100kPoints, "???")}
+  ${renderTrophy("Miljoona pistettä – Mitä teet elämälläsi?", achievements.total1MPoints, "?????")}
+  ${renderTrophy("Jokerivelho – 1000 jokeria", achievements.jokerWizard, "???!?")}
+  ${renderTrophy("Ässämestari", achievements.aceSarvivor, "?!???")}
+</ul>
   `;
 }
 
@@ -201,6 +208,8 @@ Object.assign(modal.style, {
   display: "none",
   minWidth: "300px",
   maxWidth: "90vw",
+  maxHeight: "69.420vh",
+  overflowY: "auto",
   textAlign: "center",
   fontFamily: "sans-serif",
   fontSize: "15px"
@@ -277,9 +286,6 @@ backToStatsButton.addEventListener("click", () => {
   downloadButton.style.display = "inline-block";
   loadButton.style.display = "inline-block";
 });
-
-
-
 
   const downloadButton = document.createElement("button");
   downloadButton.textContent = "Tallenna peli";
