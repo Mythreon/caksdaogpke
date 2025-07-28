@@ -512,21 +512,27 @@ function updateAchievements(score, lastGameMisses) {
   if (gamesCompleted >= 20)   achievements.twentyGames   = true;
   if (gamesCompleted >= 100)  achievements.hundredGames  = true;
   if (gamesCompleted >= 1000) achievements.thousandGames = true;
+  if (gamesCompleted >= 10000) achievements.tenThousandGames = true;
 
   if (totalPoints >= 10000)   achievements.total10kPoints = true;
 
   if (totalAces >= 1)         achievements.firstAce      = true;
+  if (totalAces >= 10000)     achievements.aceSarvivor   = true;
   if (jokerCount >= 1)        achievements.firstJoker    = true;
   if (jokerCount >= 3)        achievements.jokerSurvivor = true;
+  if (jokerCount >= 1000)     achievements.jokerWizard   = true;
 
   if (allScores.some(s => s === 0))   achievements.zeroScore     = true;
   if (allScores.some(s => s >= 100)) achievements.highScore100  = true;
-  if (allScores.some(s => s >= 300)) achievements.highScore300  = true;
+  if (allScores.some(s => s >= 162)) achievements.highScore300  = true;
+
 
   if (lastGameMisses === 0)   achievements.noMissesGame  = true;
-  if (score >= 200 && lastGameMisses === 0) achievements.perfect300 = true;
+  if (score >= 162 && lastGameMisses === 0) achievements.perfect300 = true;
   if (totalAces >= 3)         achievements.aceMaster     = true;
   if (jokerCount >= 5)        achievements.jokerMagnet   = true;
+  if (totalPoints >= 100000)  achievements.total100kPoints = true;
+  if (totalPoints >= 1000000) achievements.total1MPoints = true;
 
   localStorage.setItem("achievements", JSON.stringify(achievements));
 }
