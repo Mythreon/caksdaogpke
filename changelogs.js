@@ -37,6 +37,7 @@ changelogBox.innerHTML = `
 ">x</button>
   </div>
   <ul style="margin-top: 12px; padding-left: 18px; list-style-type: disc; color: #f0f0f0; max-height: 400px; overflow-y: auto;">
+    <li><strong style="color:#90ee90">v1.2.33</strong>: Lisätty saavutuksia ja korjattu menu.</li>
     <li><strong style="color:#90ee90">v1.2.32</strong>: Korjattu saavutusten nappien renderöityminen.</li>
     <li><strong style="color:#90ee90">v1.2.31</strong>: Korjattu ongelmia saavutuksissa. Korjattu kirjoitusvirhe(itä).</li>
     <li><strong style="color:#90ee90">v1.2.3</strong>: Lisätty saavutukset.</li>
