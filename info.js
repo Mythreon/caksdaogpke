@@ -447,7 +447,7 @@ overlay.addEventListener("click", () => {
   loadButton.style.display = "inline-block";
 });
 
-
+  // Under any circumstance, DO NOT EDIT! I tried to optimize this, but it broke the main game(?)
   modal.appendChild(statsText);
   modal.appendChild(closeButton);
   document.body.appendChild(overlay);
